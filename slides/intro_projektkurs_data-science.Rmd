@@ -130,7 +130,6 @@ class: inverse, center, middle
 ## Aufbau der Veranstaltung
 
 - Interaktive Vorlesung mit Übungsaufgaben
-- [Anonymer Chat](https://quizchat.econ.mathematik.uni-ulm.de/pkds/) in der Veranstaltung (mit Umfragen)
 - `RTutor` Übungsaufgaben um Inhalte zu vertiefen
 - Ein gemeinsames Projekt mit dem Dozenten
 - Zwei selbstständige Projekte
@@ -259,7 +258,7 @@ class: inverse, center, middle
 
 - Auf Moodle gibt es ein Diskussionforum, scheuen Sie sich nicht dort ihre Fragen zu stellen!
     - Bitte benutzen Sie dieses Forum, bevor Sie eine Mail an den Tutor, Übungsleiter oder Dozent stellen
-    - Wir haben einige Beispiele aufgearbeitet, wie Sie Fragen stellen sollten, damit Sie schnell eine antworten erhalten. Das Dokument finden Sie in Moodle unter `Wie stelle ich Fragen im Forum?`
+    - Wir haben einige Beispiele aufgearbeitet, wie Sie Fragen stellen sollten, damit Sie schnell eine antworten erhalten. Das Dokument finden Sie in Moodle unter [`Wie stelle ich Fragen im Forum?`](https://projektkurs-data-science-ulm2324.netlify.app/tutorials/fragen-im-forum)
 --
 - Es finden parallel zu den Projektarbeiten Tutorien statt, wobei jede Gruppe einen festen Termin pro Woche erhält
 
@@ -273,7 +272,7 @@ class: inverse, center, middle
 - Bereits ab der 1. Vorlesungswoche gibt es ein vorlesungsbegleitendes Tutorium.
   - Im Excel Veranstaltungskalender auf der Moodle-Seite sind beispielhafte Tutoriumstermine eingetragen. Der für ihre Gruppe relevante Termin wird auf Moodle bekannt gegeben
 - Die Tutorien werden wöchentlich in Präsenz stattfinden (die Räume werden in Moodle bekannt gegeben)
-- Die Tutorinnen und Tutoren beantworten auch ihre Fragen auf Moodle
+- Die Tutoren beantworten auch ihre Fragen auf Moodle
   - Bitte stellen Sie ihre Fragen im Forum, wenn ihr Problem allgemeiner Natur ist
 
 --
