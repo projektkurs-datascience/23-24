@@ -412,7 +412,7 @@ include_graphics(einkommensdezile)
 
 ---
 
-## Projekt 3: Wettbewerbsanalyse für eine Krankenvollversicherung
+## Projekt 3: Eigene Versicherungsprämie berechnen
 
 --
 
@@ -420,18 +420,17 @@ include_graphics(einkommensdezile)
 <br><br>
 In diesem Projekt widmen Sie sich der Frage:
 
-.alert[Wie könnten Sie sich als (neue) private Krankenversicherung im Markt positionieren? Welche Faktoren könnten in der Wettbewerbsanalyse wichtig sein?]
+.alert[Sollte ich für das Alter vorsorgen und wenn ja, ist eine Lebensversicherung ein geeignetes Produkt dafür?]
 
-Zur Beantwortung dieser Fragen analysieren Sie die Wettbewerbssituation für eine private Krankenvollversicherung in Deutschland.
+Zur Beantwortung dieser Fragen analysieren sie Sterbetafeln, schätzen ihre eigene Lebenserwartung ab und berechnen sich ihre eigene faire Versicherungsprämie
 ]
 .pull-right[
 <br><br>
 ```{r, echo = FALSE, out.width="100%"}
-preise <- "figs/PKV_Preise.png"
-include_graphics(preise)
+sterbetafeln <- "figs/sterbetafeln.png"
+include_graphics(sterbetafeln)
 ```
 
-<font size="1">Quelle: Bundestag_Drucksache_19746</font> 
 ]
 
 
