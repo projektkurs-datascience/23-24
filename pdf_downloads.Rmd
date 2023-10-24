@@ -12,7 +12,13 @@ Hier finden Sie Folien als PDFs zum Download:
 - [Wieso Git und Github](slides/Vorteile_Git-und-Github.pdf)
 - [Programming Basics](slides/programming-basics.pdf)
 - [Vektorarithmetik](slides/vector-arithmetics.pdf)
+- [Daten in R importieren](slides/import-data.pdf)
+- [Daten in die richtige Form bringen](slides/reshape-data.pdf)
+- [Einführung in die Datenaufbereitung](slides/data-wrangling-intro.pdf)
+- [Datensätze zusammenführen](slides/combine-tables.pdf)
+- [Datum und Uhrzeit](slides/dates-and-time.pdf)
 
 # Vorlesungen
 
 - [Einführungsveranstaltung](slides/intro_projektkurs_data-science.pdf)
+- [Case-Study Teil 1](slides/VL_case-study-Teil1.pdf)

@@ -297,9 +297,9 @@ Weiterhin stehen unsere Variablenbezeichnungen in Zeile 5, d.h. wir ignorieren d
 Der Übersicht halber wollen wir noch eine Spalte hinzufügen, welche den Namen des Tabellenblattes enthält, welches wir gerade eingelesen haben.
 
 ```{r, message=FALSE}
-# Einlesen des Tabellenblattes "SH" ohne die ersten 5 Zeilen und nur die Spalten 1-6
+# Einlesen des Tabellenblattes "SH" ohne die ersten 5 Zeilen und nur die Spalten 1-7
 schulden_individuell <- read_xlsx("./data/Schulden_2021.xlsx", sheet = "SH", skip = 5)[1:7]
-# Umbenennen der ersten 6 Spalten
+# Umbenennen der ersten 7 Spalten
 colnames(schulden_individuell) <- c("Regionalschluessel", "Gemeinde", 
                                     "Verwaltungsform", "Einwohner", "Schulden_gesamt", "Veraenderung_Vorjahr", "Schulden_pro_kopf")
 
