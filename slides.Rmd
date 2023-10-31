@@ -13,6 +13,7 @@ Die folgenden Bücher sind **kostenfrei**, können **online** gelesen werden und
 - R for Data Science: http://r4ds.had.co.nz
 - Introduction to Data Science: https://rafalab.github.io/dsbook/
 - Causal Inference: The Mixtape: https://mixtape.scunning.com/index.html
+- The Effect: https://theeffectbook.net/
 
 
 ## Folien der Lehrvideos {.tabset}
@@ -105,6 +106,57 @@ knitr::include_url("slides/combine-tables.html")
 knitr::include_url("slides/dates-and-time.html")
 ```
 
+### 11: Visualisierung mit ggplot2
+
+```{r}
+knitr::include_url("slides/Visualisierung_mit_ggplot2.html")
+```
+
+- Ein schönes Tutorial wie Sie (ansprechende) Grafiken mit ggplot2 erzeugen können gibt [Cedric Scherer](https://cedricscherer.netlify.app/2019/05/17/the-evolution-of-a-ggplot-ep.-1/) 
+
+- Weiterhin gibt es eine wöchentliche Challange genannt [#Tidytuesday](https://github.com/rfordatascience/tidytuesday) bei der Sie viele ansprechende Grafiken finden mit dem entsprechende Code
+  - [Hier der Github Accunt von Cedric Scherer mit vielen schönen Beispielen](https://github.com/Z3tt/TidyTuesday) oder [noch der Account von Georgios Karamanis](https://github.com/gkaramanis/tidytuesday) um nur zwei zu nennen
+
+- Das RStudio `ggplot2` Cheatsheet finden Sie hier: https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf
+
+### 12: Visualisierungsguidelines
+
+```{r}
+knitr::include_url("slides/Visualisierung-Guidelines.html")
+```
+
+- Diese Vorlesungseinheit orientiert sich an einem Vortrag von [Karl Broman](http://kbroman.org/) mit dem Titel: ["Creating effective figures and tables"](https://www.biostat.wisc.edu/~kbroman/presentations/graphs2017.pdf), 
+- Weiterhin sind die Vorlesungsfolien von Peter Aldhous eingearbeitet worden: [Introduction to Data Visualization course](http://paldhous.github.io/ucb/2016/dataviz/index.html) 
+
+- Wie auch das Buch [Introduction to Data Science](https://rafalab.github.io/dsbook/) (Kapitel 10)
+
+### 13: Korrelation
+
+```{r}
+knitr::include_url("slides/correlation.html")
+```
+
+### 14: Advanced R Markdown
+
+```{r}
+knitr::include_url("slides/Advanced_RMarkdown.html")
+```
+
+- Hervorragende Einführungen und Übersichten zu R Markdown bietet Allison Hill an. [Hier](https://apreshill.github.io/rmd4cdc/#1) und [hier](https://rstudio-education.github.io/teaching-in-production/slides/index.html#1) finden Sie zwei sehr gute Präsentationen.
+
+- Für die Erstellung von Präsentation in RMarkdown mittels dem Paket xaringan [hier eine sehr gute Einführung](https://spcanelon.github.io/xaringan-basics-and-beyond/index.html).
+
+- Wenn Sie eine Abschlussarbeit mit RMarkdown verfassen möchten dann würde ich ihnen [diesen Vortrag](https://resulumit.com/teaching/rmd_workshop.html#1) von Herr Resul Umit empfehlen.
+
+### 15: Stichprobe vs. Grundgesamtheit
+
+```{r}
+knitr::include_url("slides/sample-vs-population.html")
+```
+
+- Eine hervorragende Einführung finden Sie im Buch [ModernDive (Kapitel 7)](https://moderndive.com/7-sampling.html)
+- Eine etwas tiefgreifendere Einführung finden Sie in dem Buch [Learning Statistics with R (Kapitel 10)](https://learningstatisticswithr.com/lsr-0.6.pdf)
+
 
 ## Vorlesungsfolien der Live-Veranstaltungen {.tabset}
 
@@ -118,4 +170,10 @@ knitr::include_url("slides/intro_projektkurs_data-science.html")
 
 ```{r}
 knitr::include_url("slides/VL_case-study-Teil1.html")
+```
+
+### 03: Zweiter Teil der Case-Study 
+
+```{r}
+knitr::include_url("slides/VL_case-study-Teil2.html")
 ```
