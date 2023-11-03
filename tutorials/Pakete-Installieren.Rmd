@@ -41,7 +41,8 @@ install.packages("kableExtra") # Schöne HTML Tabellen
 install.packages("ggalt") # Schaubilder nebeneinander platzieren
 install.packages("stargazer") # Schönen Regressionsoutput erzeugen
 install.packages("modelsummary") # Schönen Regressionsoutput erzeugen
-install.packages("RTutor",repos = c("https://skranz-repo.github.io/drat/",getOption("repos"))) # Problem Sets
+options(repos = c(skranz = 'https://skranz.r-universe.dev', CRAN = 'https://cloud.r-project.org'))
+install.packages("RTutor")  # Problem Sets
 ```
 
 # Versionen von R, R-Studio und der einzelnen Pakete abrufen

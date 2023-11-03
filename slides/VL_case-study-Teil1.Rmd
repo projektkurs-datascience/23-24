@@ -569,7 +569,7 @@ sheet_names <- excel_sheets("../case-study/data/Schulden_2021.xlsx")
 # Einlesen der Tabellenblätter 7-18 (alle Bundesländer)
 sheet_read <- sheet_names[7:18]
 *for (i in 1:length(sheet_read)){
-  tmp <- read_xlsx("../case-study/data/Schulden_2017.xlsx", sheet = sheet_read[i], skip = 5)[1:7]
+  tmp <- read_xlsx("../case-study/data/Schulden_2021.xlsx", sheet = sheet_read[i], skip = 5)[1:7]
 *  tmp$Bundesland <- sheet_read[i]
   colnames(tmp) <- c("Regionalschluessel", "Gemeinde", "Verwaltungsform", 
                      "Einwohner", "Schulden_gesamt", "Veraenderung_Vorjahr", "Schulden_pro_kopf", "Bundesland")
@@ -591,7 +591,7 @@ sheet_names <- excel_sheets("../case-study/data/Schulden_2021.xlsx")
 # Einlesen der Tabellenblätter 7-18 (alle Bundesländer)
 sheet_read <- sheet_names[7:18]
 for (i in 1:length(sheet_read)){
-  tmp <- read_xlsx("../case-study/data/Schulden_2017.xlsx", sheet = sheet_read[i], skip = 5)[1:7]
+  tmp <- read_xlsx("../case-study/data/Schulden_2021.xlsx", sheet = sheet_read[i], skip = 5)[1:7]
 *  tmp$Bundesland <- sheet_read[i]
   colnames(tmp) <- c("Regionalschluessel", "Gemeinde", "Verwaltungsform", 
                      "Einwohner", "Schulden_gesamt", "Veraenderung_Vorjahr", "Schulden_pro_kopf", "Bundesland")
@@ -674,7 +674,9 @@ schulden_individuell %>%
   mutate(Einwohner = as.numeric(Einwohner)) %>%
   mutate(Schulden_pro_kopf = as.numeric(Schulden_pro_kopf)) %>%
   mutate(landkreis = str_extract(Regionalschluessel, "^.{5}")) %>%
-  select(-Veraenderung_Vorjahr) ->
+  select(-Veraenderung_Vorjahr) %>%
+  #manche Landkreise haben keine Infos zu den Einwohnern, diese entfernen wir
+  filter( !is.na( Einwohner )) ->
 schulden_bereinigt
 
 ```
@@ -711,6 +713,7 @@ schulden_consistency <- schulden_individuell %>%
                                 as.numeric(gsub("[[:space:]]", "", str_remove_all(Einwohner, "[{}]"))), 
                                 as.numeric(Einwohner)),
          Schulden_pro_kopf_new = round(Schulden_gesamt / Einwohner_num,2)) %>%
+  relocate(Regionalschluessel, Einwohner, Einwohner_num, Schulden_pro_kopf, Schulden_pro_kopf_new ) %>%
   mutate(landkreis = str_extract(Regionalschluessel, "^.{5}"),
          differenz = Schulden_pro_kopf - Schulden_pro_kopf_new) 
 ```
@@ -734,6 +737,7 @@ schulden_individuell %>%
                                 as.numeric(gsub("[[:space:]]", "", str_remove_all(Einwohner, "[{}]"))), 
                                 as.numeric(Einwohner))) %>%
   mutate(Schulden_pro_kopf_new = round(Schulden_gesamt / Einwohner_num,2)) %>%
+  relocate(Regionalschluessel, Einwohner, Einwohner_num, Schulden_pro_kopf, Schulden_pro_kopf_new ) %>%
   mutate(landkreis = str_extract(Regionalschluessel, "^.{5}"),
          differenz = Schulden_pro_kopf - Schulden_pro_kopf_new) ->
 schulden_consistency
@@ -756,7 +760,7 @@ range(schulden_consistency$differenz, na.rm=TRUE)
 
 ## Interne Validität Schulden pro Kopf
 
-Es gibt 12 nicht verfügbaren Werte:
+Es gibt keine nicht verfügbaren Werte, was gut ist bzgl. der internen Validität.
 
 ```{r}
 filter(schulden_consistency, is.na(differenz))
@@ -857,7 +861,7 @@ head(bip_wide, 3)
 Datensatz ins `long`-Format überführen mit `pivot_longer`:
 
 ```{r, eval=FALSE}
-bip_long <- pivot_longer(bip_wide, cols = c("1992":"2019") , names_to = "Jahr", values_to = "BIP")
+bip_long <- pivot_longer(bip_wide, cols = c("1992":"2021") , names_to = "Jahr", values_to = "BIP")
 ```
 
 ```
@@ -1058,7 +1062,7 @@ einwohner_kombi
 # Anzahl der Einwohner mit dem BIP verbinden um das BIP pro Kopf berechnen zu können
 left_join(bip_long, einwohner_long, by=c("Regionalschluessel", "Jahr")) %>%
   mutate(bip_pro_kopf = bip / einwohner) %>%
-  # BIP auf Landkreisebene im Jahr 2017
+  # BIP auf Landkreisebene
   filter(nchar(Regionalschluessel) == 5 & Jahr == 2021) %>%
   select(-c(Jahr, einwohner)) ->
 bip_kombi

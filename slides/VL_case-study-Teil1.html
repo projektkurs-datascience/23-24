@@ -175,7 +175,7 @@ library(tidyverse)
 
 .alert[Wenn Sie zu Beginn der Woche in Github Desktop auf "Pull" klicken werden alle Vorlesungsinhalte automatisch aktualisiert, d.h. alle Vorlesungsfolien, die Case-Study, Tutorials etc.!]
 
-<div class="countdown" id="timer_394df44e" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown" id="timer_51903170" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -1850,7 +1850,7 @@ sheet_names &lt;- excel_sheets("../case-study/data/Schulden_2021.xlsx")
 # Einlesen der Tabellenblätter 7-18 (alle Bundesländer)
 sheet_read &lt;- sheet_names[7:18]
 *for (i in 1:length(sheet_read)){
-  tmp &lt;- read_xlsx("../case-study/data/Schulden_2017.xlsx", sheet = sheet_read[i], skip = 5)[1:7]
+  tmp &lt;- read_xlsx("../case-study/data/Schulden_2021.xlsx", sheet = sheet_read[i], skip = 5)[1:7]
 *  tmp$Bundesland &lt;- sheet_read[i]
   colnames(tmp) &lt;- c("Regionalschluessel", "Gemeinde", "Verwaltungsform", 
                      "Einwohner", "Schulden_gesamt", "Veraenderung_Vorjahr", "Schulden_pro_kopf", "Bundesland")
@@ -1873,7 +1873,7 @@ sheet_names &lt;- excel_sheets("../case-study/data/Schulden_2021.xlsx")
 # Einlesen der Tabellenblätter 7-18 (alle Bundesländer)
 sheet_read &lt;- sheet_names[7:18]
 for (i in 1:length(sheet_read)){
-  tmp &lt;- read_xlsx("../case-study/data/Schulden_2017.xlsx", sheet = sheet_read[i], skip = 5)[1:7]
+  tmp &lt;- read_xlsx("../case-study/data/Schulden_2021.xlsx", sheet = sheet_read[i], skip = 5)[1:7]
 *  tmp$Bundesland &lt;- sheet_read[i]
   colnames(tmp) &lt;- c("Regionalschluessel", "Gemeinde", "Verwaltungsform", 
                      "Einwohner", "Schulden_gesamt", "Veraenderung_Vorjahr", "Schulden_pro_kopf", "Bundesland")
@@ -2501,7 +2501,52 @@ schulden_individuell %&gt;%
   mutate(Einwohner = as.numeric(Einwohner)) %&gt;%
   mutate(Schulden_pro_kopf = as.numeric(Schulden_pro_kopf)) %&gt;%
   mutate(landkreis = str_extract(Regionalschluessel, "^.{5}")) %&gt;%
-  select(-Veraenderung_Vorjahr) -&gt;
+  select(-Veraenderung_Vorjahr) %&gt;%
+#manche Landkreise haben keine Infos zu den Einwohnern, diese entfernen wir
+* filter( !is.na( Einwohner ))
+```
+]
+ 
+.panel2-schulden_umformen-auto[
+
+```
+## # A tibble: 10,785 × 8
+##    Regionalschluessel Gemeinde         Verwaltungsform Einwohner Schulden_gesamt
+##    &lt;chr&gt;              &lt;chr&gt;            &lt;chr&gt;               &lt;dbl&gt;           &lt;dbl&gt;
+##  1 010010000000       Flensburg, Stadt kreisfreie Sta…     89949      454539446.
+##  2 010020000000       Kiel, Landeshau… kreisfreie Sta…    245841     1039095143.
+##  3 010030000000       Lübeck, Hansest… kreisfreie Sta…    215051     1090890891.
+##  4 010040000000       Neumünster, Sta… kreisfreie Sta…     79683      453215674.
+##  5 010510011011       Brunsbüttel, St… amtsfreie Geme…     12324       54641169.
+##  6 010510044044       Heide, Stadt     amtsfreie Geme…     21515       42854872.
+##  7 010515163003       Averlak          amtsangehörige…       554        1917335.
+##  8 010515163010       Brickeln         amtsangehörige…       200        1176541.
+##  9 010515163012       Buchholz         amtsangehörige…       997        1976658.
+## 10 010515163016       Burg (Dithmarsc… amtsangehörige…      4166       10359909.
+## # ℹ 10,775 more rows
+## # ℹ 3 more variables: Schulden_pro_kopf &lt;dbl&gt;, Bundesland &lt;chr&gt;,
+## #   landkreis &lt;chr&gt;
+```
+]
+
+---
+count: false
+ 
+
+.panel1-schulden_umformen-auto[
+
+```r
+# Die Daten wurden noch nicht schön eingelesen, in der Excel Tabelle
+# waren die Variablennamen über mehrere Reihen gezogen, dies müssen wir noch ausgleichen
+schulden_individuell %&gt;%
+  filter(!is.na(Regionalschluessel)) %&gt;%
+  mutate(Schulden_gesamt = as.numeric(Schulden_gesamt)) %&gt;%
+  mutate(Einwohner = as.numeric(Einwohner)) %&gt;%
+  mutate(Schulden_pro_kopf = as.numeric(Schulden_pro_kopf)) %&gt;%
+  mutate(landkreis = str_extract(Regionalschluessel, "^.{5}")) %&gt;%
+  select(-Veraenderung_Vorjahr) %&gt;%
+#manche Landkreise haben keine Infos zu den Einwohnern, diese entfernen wir
+  filter( !is.na( Einwohner )) -&gt;
 *schulden_bereinigt
 ```
 ]
@@ -2525,7 +2570,9 @@ schulden_individuell %&gt;%
   mutate(Einwohner = as.numeric(Einwohner)) %&gt;%
   mutate(Schulden_pro_kopf = as.numeric(Schulden_pro_kopf)) %&gt;%
   mutate(landkreis = str_extract(Regionalschluessel, "^.{5}")) %&gt;%
-  select(-Veraenderung_Vorjahr) -&gt;
+  select(-Veraenderung_Vorjahr) %&gt;%
+#manche Landkreise haben keine Infos zu den Einwohnern, diese entfernen wir
+  filter( !is.na( Einwohner )) -&gt;
 schulden_bereinigt
 ```
 ]
@@ -2598,6 +2645,7 @@ schulden_consistency &lt;- schulden_individuell %&gt;%
                                 as.numeric(gsub("[[:space:]]", "", str_remove_all(Einwohner, "[{}]"))), 
                                 as.numeric(Einwohner)),
          Schulden_pro_kopf_new = round(Schulden_gesamt / Einwohner_num,2)) %&gt;%
+  relocate(Regionalschluessel, Einwohner, Einwohner_num, Schulden_pro_kopf, Schulden_pro_kopf_new ) %&gt;%
   mutate(landkreis = str_extract(Regionalschluessel, "^.{5}"),
          differenz = Schulden_pro_kopf - Schulden_pro_kopf_new) 
 ```
@@ -2861,31 +2909,30 @@ schulden_individuell %&gt;%
                                 as.numeric(gsub("[[:space:]]", "", str_remove_all(Einwohner, "[{}]"))),
                                 as.numeric(Einwohner))) %&gt;%
   mutate(Schulden_pro_kopf_new = round(Schulden_gesamt / Einwohner_num,2)) %&gt;%
-* mutate(landkreis = str_extract(Regionalschluessel, "^.{5}"),
-*        differenz = Schulden_pro_kopf - Schulden_pro_kopf_new)
+* relocate(Regionalschluessel, Einwohner, Einwohner_num, Schulden_pro_kopf, Schulden_pro_kopf_new )
 ```
 ]
  
 .panel2-schulden_konsistenz-auto[
 
 ```
-## # A tibble: 13,114 × 12
-##    Regionalschluessel Gemeinde         Verwaltungsform Einwohner Schulden_gesamt
-##    &lt;chr&gt;              &lt;chr&gt;            &lt;chr&gt;           &lt;chr&gt;               &lt;dbl&gt;
-##  1 010010000000       Flensburg, Stadt kreisfreie Sta… 89949          454539446.
-##  2 010020000000       Kiel, Landeshau… kreisfreie Sta… 245841        1039095143.
-##  3 010030000000       Lübeck, Hansest… kreisfreie Sta… 215051        1090890891.
-##  4 010040000000       Neumünster, Sta… kreisfreie Sta… 79683          453215674.
-##  5 01051              Kreisverwaltung… Kreisverwaltung {133 401}       42967439.
-##  6 010510011011       Brunsbüttel, St… amtsfreie Geme… 12324           54641169.
-##  7 010510044044       Heide, Stadt     amtsfreie Geme… 21515           42854872.
-##  8 010515163          Amtsverwaltung … Amtsverwaltung  {15 547}          850386.
-##  9 010515163003       Averlak          amtsangehörige… 554              1917335.
-## 10 010515163010       Brickeln         amtsangehörige… 200              1176541.
+## # A tibble: 13,114 × 10
+##    Regionalschluessel Einwohner Einwohner_num Schulden_pro_kopf
+##    &lt;chr&gt;              &lt;chr&gt;             &lt;dbl&gt;             &lt;dbl&gt;
+##  1 010010000000       89949             89949            5053. 
+##  2 010020000000       245841           245841            4227. 
+##  3 010030000000       215051           215051            5073. 
+##  4 010040000000       79683             79683            5688. 
+##  5 01051              {133 401}        133401             322. 
+##  6 010510011011       12324             12324            4434. 
+##  7 010510044044       21515             21515            1992. 
+##  8 010515163          {15 547}          15547              54.7
+##  9 010515163003       554                 554            3461. 
+## 10 010515163010       200                 200            5883. 
 ## # ℹ 13,104 more rows
-## # ℹ 7 more variables: Veraenderung_Vorjahr &lt;chr&gt;, Schulden_pro_kopf &lt;dbl&gt;,
-## #   Bundesland &lt;chr&gt;, Einwohner_num &lt;dbl&gt;, Schulden_pro_kopf_new &lt;dbl&gt;,
-## #   landkreis &lt;chr&gt;, differenz &lt;dbl&gt;
+## # ℹ 6 more variables: Schulden_pro_kopf_new &lt;dbl&gt;, Gemeinde &lt;chr&gt;,
+## #   Verwaltungsform &lt;chr&gt;, Schulden_gesamt &lt;dbl&gt;, Veraenderung_Vorjahr &lt;chr&gt;,
+## #   Bundesland &lt;chr&gt;
 ```
 ]
 
@@ -2909,6 +2956,56 @@ schulden_individuell %&gt;%
                                 as.numeric(gsub("[[:space:]]", "", str_remove_all(Einwohner, "[{}]"))),
                                 as.numeric(Einwohner))) %&gt;%
   mutate(Schulden_pro_kopf_new = round(Schulden_gesamt / Einwohner_num,2)) %&gt;%
+  relocate(Regionalschluessel, Einwohner, Einwohner_num, Schulden_pro_kopf, Schulden_pro_kopf_new ) %&gt;%
+* mutate(landkreis = str_extract(Regionalschluessel, "^.{5}"),
+*        differenz = Schulden_pro_kopf - Schulden_pro_kopf_new)
+```
+]
+ 
+.panel2-schulden_konsistenz-auto[
+
+```
+## # A tibble: 13,114 × 12
+##    Regionalschluessel Einwohner Einwohner_num Schulden_pro_kopf
+##    &lt;chr&gt;              &lt;chr&gt;             &lt;dbl&gt;             &lt;dbl&gt;
+##  1 010010000000       89949             89949            5053. 
+##  2 010020000000       245841           245841            4227. 
+##  3 010030000000       215051           215051            5073. 
+##  4 010040000000       79683             79683            5688. 
+##  5 01051              {133 401}        133401             322. 
+##  6 010510011011       12324             12324            4434. 
+##  7 010510044044       21515             21515            1992. 
+##  8 010515163          {15 547}          15547              54.7
+##  9 010515163003       554                 554            3461. 
+## 10 010515163010       200                 200            5883. 
+## # ℹ 13,104 more rows
+## # ℹ 8 more variables: Schulden_pro_kopf_new &lt;dbl&gt;, Gemeinde &lt;chr&gt;,
+## #   Verwaltungsform &lt;chr&gt;, Schulden_gesamt &lt;dbl&gt;, Veraenderung_Vorjahr &lt;chr&gt;,
+## #   Bundesland &lt;chr&gt;, landkreis &lt;chr&gt;, differenz &lt;dbl&gt;
+```
+]
+
+---
+count: false
+ 
+
+.panel1-schulden_konsistenz-auto[
+
+```r
+# Erstellen der Vergleichstabelle
+schulden_individuell %&gt;%
+  filter( !is.na(Einwohner) &amp; !is.na(Regionalschluessel) ) %&gt;%
+  mutate(Schulden_gesamt = ifelse(is.na(as.numeric(Schulden_gesamt))==TRUE,
+                                  as.numeric(gsub("[[:space:]]", "", str_remove_all(Schulden_gesamt, "[{}]"))),
+                                  as.numeric(Schulden_gesamt))) %&gt;%
+  mutate(Schulden_pro_kopf = ifelse(is.na(as.numeric(Schulden_pro_kopf))==TRUE,
+                                    as.numeric(gsub("[[:space:]]", "", str_remove_all(Schulden_pro_kopf, "[{}]"))),
+                                    as.numeric(Schulden_pro_kopf))) %&gt;%
+  mutate(Einwohner_num = ifelse(is.na(as.numeric(Einwohner))==TRUE,
+                                as.numeric(gsub("[[:space:]]", "", str_remove_all(Einwohner, "[{}]"))),
+                                as.numeric(Einwohner))) %&gt;%
+  mutate(Schulden_pro_kopf_new = round(Schulden_gesamt / Einwohner_num,2)) %&gt;%
+  relocate(Regionalschluessel, Einwohner, Einwohner_num, Schulden_pro_kopf, Schulden_pro_kopf_new ) %&gt;%
   mutate(landkreis = str_extract(Regionalschluessel, "^.{5}"),
          differenz = Schulden_pro_kopf - Schulden_pro_kopf_new) -&gt;
 *schulden_consistency
@@ -2972,7 +3069,7 @@ range(schulden_consistency$differenz, na.rm=TRUE)
 
 ## Interne Validität Schulden pro Kopf
 
-Es gibt 12 nicht verfügbaren Werte:
+Es gibt keine nicht verfügbaren Werte, was gut ist bzgl. der internen Validität.
 
 
 ```r
@@ -2981,10 +3078,10 @@ filter(schulden_consistency, is.na(differenz))
 
 ```
 ## # A tibble: 0 × 12
-## # ℹ 12 variables: Regionalschluessel &lt;chr&gt;, Gemeinde &lt;chr&gt;,
-## #   Verwaltungsform &lt;chr&gt;, Einwohner &lt;chr&gt;, Schulden_gesamt &lt;dbl&gt;,
-## #   Veraenderung_Vorjahr &lt;chr&gt;, Schulden_pro_kopf &lt;dbl&gt;, Bundesland &lt;chr&gt;,
-## #   Einwohner_num &lt;dbl&gt;, Schulden_pro_kopf_new &lt;dbl&gt;, landkreis &lt;chr&gt;,
+## # ℹ 12 variables: Regionalschluessel &lt;chr&gt;, Einwohner &lt;chr&gt;,
+## #   Einwohner_num &lt;dbl&gt;, Schulden_pro_kopf &lt;dbl&gt;, Schulden_pro_kopf_new &lt;dbl&gt;,
+## #   Gemeinde &lt;chr&gt;, Verwaltungsform &lt;chr&gt;, Schulden_gesamt &lt;dbl&gt;,
+## #   Veraenderung_Vorjahr &lt;chr&gt;, Bundesland &lt;chr&gt;, landkreis &lt;chr&gt;,
 ## #   differenz &lt;dbl&gt;
 ```
 
@@ -3300,7 +3397,7 @@ Datensatz ins `long`-Format überführen mit `pivot_longer`:
 
 
 ```r
-bip_long &lt;- pivot_longer(bip_wide, cols = c("1992":"2019") , names_to = "Jahr", values_to = "BIP")
+bip_long &lt;- pivot_longer(bip_wide, cols = c("1992":"2021") , names_to = "Jahr", values_to = "BIP")
 ```
 
 ```
@@ -3810,20 +3907,20 @@ count: false
 .panel2-kombi1-auto[
 
 ```
-## # A tibble: 13,155 × 8
+## # A tibble: 10,785 × 8
 ##    Regionalschluessel Gemeinde         Verwaltungsform Einwohner Schulden_gesamt
 ##    &lt;chr&gt;              &lt;chr&gt;            &lt;chr&gt;               &lt;dbl&gt;           &lt;dbl&gt;
 ##  1 010010000000       Flensburg, Stadt kreisfreie Sta…     89949      454539446.
 ##  2 010020000000       Kiel, Landeshau… kreisfreie Sta…    245841     1039095143.
 ##  3 010030000000       Lübeck, Hansest… kreisfreie Sta…    215051     1090890891.
 ##  4 010040000000       Neumünster, Sta… kreisfreie Sta…     79683      453215674.
-##  5 01051              Kreisverwaltung… Kreisverwaltung        NA       42967439.
-##  6 010510011011       Brunsbüttel, St… amtsfreie Geme…     12324       54641169.
-##  7 010510044044       Heide, Stadt     amtsfreie Geme…     21515       42854872.
-##  8 010515163          Amtsverwaltung … Amtsverwaltung         NA         850386.
-##  9 010515163003       Averlak          amtsangehörige…       554        1917335.
-## 10 010515163010       Brickeln         amtsangehörige…       200        1176541.
-## # ℹ 13,145 more rows
+##  5 010510011011       Brunsbüttel, St… amtsfreie Geme…     12324       54641169.
+##  6 010510044044       Heide, Stadt     amtsfreie Geme…     21515       42854872.
+##  7 010515163003       Averlak          amtsangehörige…       554        1917335.
+##  8 010515163010       Brickeln         amtsangehörige…       200        1176541.
+##  9 010515163012       Buchholz         amtsangehörige…       997        1976658.
+## 10 010515163016       Burg (Dithmarsc… amtsangehörige…      4166       10359909.
+## # ℹ 10,775 more rows
 ## # ℹ 3 more variables: Schulden_pro_kopf &lt;dbl&gt;, Bundesland &lt;chr&gt;,
 ## #   landkreis &lt;chr&gt;
 ```
@@ -3845,21 +3942,21 @@ schulden_bereinigt %&gt;%
 .panel2-kombi1-auto[
 
 ```
-## # A tibble: 13,155 × 8
-## # Groups:   landkreis [430]
+## # A tibble: 10,785 × 8
+## # Groups:   landkreis [396]
 ##    Regionalschluessel Gemeinde         Verwaltungsform Einwohner Schulden_gesamt
 ##    &lt;chr&gt;              &lt;chr&gt;            &lt;chr&gt;               &lt;dbl&gt;           &lt;dbl&gt;
 ##  1 010010000000       Flensburg, Stadt kreisfreie Sta…     89949      454539446.
 ##  2 010020000000       Kiel, Landeshau… kreisfreie Sta…    245841     1039095143.
 ##  3 010030000000       Lübeck, Hansest… kreisfreie Sta…    215051     1090890891.
 ##  4 010040000000       Neumünster, Sta… kreisfreie Sta…     79683      453215674.
-##  5 01051              Kreisverwaltung… Kreisverwaltung        NA       42967439.
-##  6 010510011011       Brunsbüttel, St… amtsfreie Geme…     12324       54641169.
-##  7 010510044044       Heide, Stadt     amtsfreie Geme…     21515       42854872.
-##  8 010515163          Amtsverwaltung … Amtsverwaltung         NA         850386.
-##  9 010515163003       Averlak          amtsangehörige…       554        1917335.
-## 10 010515163010       Brickeln         amtsangehörige…       200        1176541.
-## # ℹ 13,145 more rows
+##  5 010510011011       Brunsbüttel, St… amtsfreie Geme…     12324       54641169.
+##  6 010510044044       Heide, Stadt     amtsfreie Geme…     21515       42854872.
+##  7 010515163003       Averlak          amtsangehörige…       554        1917335.
+##  8 010515163010       Brickeln         amtsangehörige…       200        1176541.
+##  9 010515163012       Buchholz         amtsangehörige…       997        1976658.
+## 10 010515163016       Burg (Dithmarsc… amtsangehörige…      4166       10359909.
+## # ℹ 10,775 more rows
 ## # ℹ 3 more variables: Schulden_pro_kopf &lt;dbl&gt;, Bundesland &lt;chr&gt;,
 ## #   landkreis &lt;chr&gt;
 ```
@@ -3884,20 +3981,20 @@ schulden_bereinigt %&gt;%
 .panel2-kombi1-auto[
 
 ```
-## # A tibble: 430 × 4
+## # A tibble: 396 × 4
 ##    landkreis Schulden_pro_kopf_lk Einwohner Schulden_gesamt
 ##    &lt;chr&gt;                    &lt;dbl&gt;     &lt;dbl&gt;           &lt;dbl&gt;
 ##  1 01001                    5053.     89949      454539446.
 ##  2 01002                    4227.    245841     1039095143.
 ##  3 01003                    5073.    215051     1090890891.
 ##  4 01004                    5688.     79683      453215674.
-##  5 01051                      NA         NA             NA 
-##  6 01053                      NA         NA             NA 
-##  7 01054                      NA         NA             NA 
-##  8 01055                      NA         NA             NA 
-##  9 01056                      NA         NA             NA 
-## 10 01057                      NA         NA             NA 
-## # ℹ 420 more rows
+##  5 01051                    2826.    133401      376925967.
+##  6 01053                    1613.    199992      322536846.
+##  7 01054                    3206.    167710      537632139.
+##  8 01055                    2405.    202229      486299418.
+##  9 01056                    2917.    317385      925938817.
+## 10 01057                    2333.    129640      302408108.
+## # ℹ 386 more rows
 ```
 ]
 
@@ -3921,20 +4018,20 @@ schulden_bereinigt %&gt;%
 .panel2-kombi1-auto[
 
 ```
-## # A tibble: 430 × 4
+## # A tibble: 396 × 4
 ##    Regionalschluessel Schulden_pro_kopf_lk Einwohner Schulden_gesamt
 ##    &lt;chr&gt;                             &lt;dbl&gt;     &lt;dbl&gt;           &lt;dbl&gt;
 ##  1 01001                             5053.     89949      454539446.
 ##  2 01002                             4227.    245841     1039095143.
 ##  3 01003                             5073.    215051     1090890891.
 ##  4 01004                             5688.     79683      453215674.
-##  5 01051                               NA         NA             NA 
-##  6 01053                               NA         NA             NA 
-##  7 01054                               NA         NA             NA 
-##  8 01055                               NA         NA             NA 
-##  9 01056                               NA         NA             NA 
-## 10 01057                               NA         NA             NA 
-## # ℹ 420 more rows
+##  5 01051                             2826.    133401      376925967.
+##  6 01053                             1613.    199992      322536846.
+##  7 01054                             3206.    167710      537632139.
+##  8 01055                             2405.    202229      486299418.
+##  9 01056                             2917.    317385      925938817.
+## 10 01057                             2333.    129640      302408108.
+## # ℹ 386 more rows
 ```
 ]
 
@@ -4367,7 +4464,7 @@ count: false
 # Anzahl der Einwohner mit dem BIP verbinden um das BIP pro Kopf berechnen zu können
 left_join(bip_long, einwohner_long, by=c("Regionalschluessel", "Jahr")) %&gt;%
   mutate(bip_pro_kopf = bip / einwohner) %&gt;%
-# BIP auf Landkreisebene im Jahr 2017
+# BIP auf Landkreisebene
 * filter(nchar(Regionalschluessel) == 5 &amp; Jahr == 2021)
 ```
 ]
@@ -4402,7 +4499,7 @@ count: false
 # Anzahl der Einwohner mit dem BIP verbinden um das BIP pro Kopf berechnen zu können
 left_join(bip_long, einwohner_long, by=c("Regionalschluessel", "Jahr")) %&gt;%
   mutate(bip_pro_kopf = bip / einwohner) %&gt;%
-# BIP auf Landkreisebene im Jahr 2017
+# BIP auf Landkreisebene
   filter(nchar(Regionalschluessel) == 5 &amp; Jahr == 2021) %&gt;%
 * select(-c(Jahr, einwohner))
 ```
@@ -4438,7 +4535,7 @@ count: false
 # Anzahl der Einwohner mit dem BIP verbinden um das BIP pro Kopf berechnen zu können
 left_join(bip_long, einwohner_long, by=c("Regionalschluessel", "Jahr")) %&gt;%
   mutate(bip_pro_kopf = bip / einwohner) %&gt;%
-# BIP auf Landkreisebene im Jahr 2017
+# BIP auf Landkreisebene
   filter(nchar(Regionalschluessel) == 5 &amp; Jahr == 2021) %&gt;%
   select(-c(Jahr, einwohner)) -&gt;
 *bip_kombi
@@ -4579,12 +4676,12 @@ alo_landkreis %&gt;%
 ##  2 01002                 11097. 01                        4227.    245841
 ##  3 01003                  9347. 01                        5073.    215051
 ##  4 01004                  3771. 01                        5688.     79683
-##  5 01051                  4143. 01                          NA         NA
-##  6 01053                  5603. 01                          NA         NA
-##  7 01054                  4699  01                          NA         NA
-##  8 01055                  5371  01                          NA         NA
-##  9 01056                  9371. 01                          NA         NA
-## 10 01057                  2854. 01                          NA         NA
+##  5 01051                  4143. 01                        2826.    133401
+##  6 01053                  5603. 01                        1613.    199992
+##  7 01054                  4699  01                        3206.    167710
+##  8 01055                  5371  01                        2405.    202229
+##  9 01056                  9371. 01                        2917.    317385
+## 10 01057                  2854. 01                        2333.    129640
 ## # ℹ 390 more rows
 ## # ℹ 1 more variable: Schulden_gesamt &lt;dbl&gt;
 ```
@@ -4618,12 +4715,12 @@ alo_landkreis %&gt;%
 ##  2 01002                 11097. 01                        4227.    245841
 ##  3 01003                  9347. 01                        5073.    215051
 ##  4 01004                  3771. 01                        5688.     79683
-##  5 01051                  4143. 01                          NA         NA
-##  6 01053                  5603. 01                          NA         NA
-##  7 01054                  4699  01                          NA         NA
-##  8 01055                  5371  01                          NA         NA
-##  9 01056                  9371. 01                          NA         NA
-## 10 01057                  2854. 01                          NA         NA
+##  5 01051                  4143. 01                        2826.    133401
+##  6 01053                  5603. 01                        1613.    199992
+##  7 01054                  4699  01                        3206.    167710
+##  8 01055                  5371  01                        2405.    202229
+##  9 01056                  9371. 01                        2917.    317385
+## 10 01057                  2854. 01                        2333.    129640
 ## # ℹ 390 more rows
 ## # ℹ 3 more variables: Schulden_gesamt &lt;dbl&gt;, bip &lt;dbl&gt;, bip_pro_kopf &lt;dbl&gt;
 ```
@@ -4659,12 +4756,12 @@ alo_landkreis %&gt;%
 ##  2 01002                 11097. 01                        4227.    245841
 ##  3 01003                  9347. 01                        5073.    215051
 ##  4 01004                  3771. 01                        5688.     79683
-##  5 01051                  4143. 01                          NA         NA
-##  6 01053                  5603. 01                          NA         NA
-##  7 01054                  4699  01                          NA         NA
-##  8 01055                  5371  01                          NA         NA
-##  9 01056                  9371. 01                          NA         NA
-## 10 01057                  2854. 01                          NA         NA
+##  5 01051                  4143. 01                        2826.    133401
+##  6 01053                  5603. 01                        1613.    199992
+##  7 01054                  4699  01                        3206.    167710
+##  8 01055                  5371  01                        2405.    202229
+##  9 01056                  9371. 01                        2917.    317385
+## 10 01057                  2854. 01                        2333.    129640
 ## # ℹ 390 more rows
 ## # ℹ 4 more variables: Schulden_gesamt &lt;dbl&gt;, bip &lt;dbl&gt;, bip_pro_kopf &lt;dbl&gt;,
 ## #   erw &lt;dbl&gt;

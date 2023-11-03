@@ -99,8 +99,11 @@ RTutor wurde von Prof. Kranz hier an der Universität Ulm entwickelt und wir hab
 `RTutor` können Sie mit dem folgenden Befehl herunterladen und dann mit `library(RTutor)` aufrufen:
 
 ```
-install.packages("RTutor",repos = c("https://skranz-repo.github.io/drat/",getOption("repos")))
-library(RTutor)
+options(repos = c(skranz = 'https://skranz.r-universe.dev',
+    CRAN = 'https://cloud.r-project.org'))
+install.packages("RTutor")
+
+library(RTutor
 ```
 
 Die Problem Sets sind als **Vorleistung** zu absolvieren. 
