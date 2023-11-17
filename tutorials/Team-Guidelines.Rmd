@@ -7,16 +7,6 @@ output:
     toc_float: true
 ---
 
-```{r, eval = FALSE, echo = FALSE}
-To Do:
-  - Streichen eines Gruppenmitglieds, oder Team auflösen und die Person muss das Ganze allein machen?
-  - Erwartungen an die Gruppenarbeit dokumentieren lassen -> Auch eigene Notenerwartung / Arbeitsaufwand
-  - Beispiel Team Contract erstellen den die Studis nutzen können
-  - Beispiel Team Contract in die Guidelines einfügen
-  - Umgang mit AI in den Formalia aufnehmen
-  - 
-```
-
 Da bisher wahrscheinlich die wenigsten von ihnen in Teams an größeren Projekten gearbeitet haben, würde ich ihnen gerne einige Tipps zur Strukturierung ihrer Teamarbeit an die Hand geben. Wenn Sie diese Tipps beherzigen kann aus ihrer Gruppe ein gut funktionierendes Team werden, wodurch die Zusammenarbeit Spaß macht und das Ergebnis sich nachher sehen lassen kann.
 
 Die Arbeit im Team ist sowohl in der Forschung, als auch im Unternehmen essentiell wichtig. Dabei werden Sie auf unterschiedliche Charaktere in ihrem Team stoßen, mit denen Sie lernen sollten umzugehen. Diesen Skill sollten Sie unserer Meinung nach bereits im Studium erwerben, da die Arbeit in einem Team den Lernerfolg im Studium und den sozialen Zusammenhalt stärkt, solange ein fairer Umgang miteinander gegeben ist und jeder seinen/ihren Teil zum Erfolg des Teams beiträgt. Sie werden schnell merken, dass jede/r seine Stärken in unterschiedlichen Bereichen hat. Nutzen Sie ihre Stärken und erklären Sie ihre Antworten auf Aufgaben ihren Teammitgliedern, denn nur wenn Sie etwas gut, schlüssig und prägnant erklären können, haben Sie es tatsächlich verstanden!
