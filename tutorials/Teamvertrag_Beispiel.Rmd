@@ -1,0 +1,90 @@
+---
+title: "Beispielhafter Teamvertrag"
+output: html_document
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Wir, die Mitglieder der Gruppe X, verpflichten uns, diese Regeln und Erwartungen zu befolgen, um ein erfolgreiches und angenehmes Teamprojekt zu gewährleisten.
+
+# Name der Teammitglieder
+
+Alice: alice@example.com
+
+Bob: bob@example.com
+
+Charlie: charlie@example.com
+
+# Projektziele
+
+- Wir möchten das Projekt bis zum Abgabetermin am 23. November 2023 abschließen
+- Wir möchten mindestens 80% der zu erreichenden Punkte holen.
+
+# Kommunikation
+
+- Wir werden E-Mail und Zoom als die Hauptkommunikationsmittel verwenden.
+- Wir werden eine wöchentliche Zoom-Sitzung am **Wochentag** um **Uhrzeit** Uhr abhalten, um den Fortschritt und die Herausforderungen des Projekts zu besprechen.
+- Wir werden gemeinsam an den Tutoriumsterminen teilnehmen und dort offene Fragen mit dem Tutor klären und gemeinsam am Projektfortschritt arbeiten
+- Wir werden Github Issues verwenden um offene Fragen zu bestimmten Aufgaben zu teilen.
+- Wir werden innerhalb von 24 Stunden auf E-Mails anderer Teammitglieder (oder des Dozenten) antworten und das Team im Voraus benachrichtigen, wenn eine Person nicht verfügbar ist oder eine Verlängerung für seine Aufgaben benötigt.
+- Wir werden uns gegenseitig über unseren Arbeitsstatus auf dem Laufenden halten und Probleme oder Verzögerungen so schnell wie möglich kommunizieren.
+- Wir werden innerhalb des Teams konstruktive Kritik geben und uns gegenseitig beim Lernen und Verbessern unterstützen.
+
+# Aufgabenverteilung
+
+Koordinator: **Bob** 
+
+Bob wird das Team koordinieren, mit dem Dozenten und in das Team kommunizieren und die Aufgaben innerhalb des Teams verteilen.
+
+Die Verantwortlichen und Kontrolleure für die einzelne Aufgaben sind in der folgenden Tabelle dargestellt:
+
+```{r, echo = FALSE}
+# Erstellen Sie einen Datenrahmen mit den Aufgaben, Verantwortlichen, Deadlines und Checkern
+aufgaben <- data.frame(
+  Aufgabe = c("Aufgabe 1", "Aufgabe 5", "Aufgabe 7"),
+  Verantwortliche = c("Alice", "Charlie", "Bob"),
+  Deadline = c("18. November", "20. November", "22. November"),
+  Kontrolleur = c("Charlie", "Alice", "Alice")
+)
+
+# Erstellen Sie eine Tabelle mit der Funktion knitr::kable()
+knitr::kable(aufgaben, caption = "Aufgaben, Verantwortliche, Deadlines und Kontrolleur")
+```
+
+# Zusammenarbeit und Vorbereitung
+
+- Wir werden unsere Treffen pünktlich und vorbereitet besuchen
+- Wir werden die Arbeit fair aufteilen und sicherstellen, dass alle Teammitglieder die Lösung der verantwortlichen Person nachvollziehen können
+- Wir werden unsere eigene Recherche und Analyse durchführen und unsere Quellen ordnungsgemäß zitieren
+- Wir werden unsere Arbeit auf Richtigkeit und Vollständigkeit überprüfen und sie auf Klarheit und Korrektheit korrekturlesen
+- Wir werden unsere Arbeit rechtzeitig einreichen und den Projektvorgaben und -anforderungen folgen
+
+# Konfliktlösung
+
+- Wir werden die Meinungen und Ideen aller Teammitglieder respektieren und auf das Feedback von Kommilitoninnen und Kommilitonen (via Review Report) hören und die Verbesserungsvorschläge offen entgegennehmen
+- Wir werden versuchen, Konflikte oder Meinungsverschiedenheiten zu lösen, indem wir sie offen und ruhig diskutieren und einen Kompromiss oder eine Lösung findet, die für alle funktioniert
+- Wir werden die Ansichten und Vorschläge der anderen respektieren und versuchen, einen Konsens zu erreichen
+- Wenn wir als Team einen Konflikt nicht selbst lösen können, dann werden wir Hilfe bei den Übungsleitern suchen (Julius Düker (julius.dueker@uni-ulm.de) und Dennis Steinle (dennis.steinle@uni-ulm.de))
+
+# Konsequenzen
+
+- Das Team wird sich an den Teamvertrag und die Projektvorgaben halten und seine Aufgaben rechtzeitig und mit der angestrebten Qualität erledigen.
+- Wenn ein Teammitglied seinen Verpflichtungen nicht nachkommt oder den Teamvertrag verletzt, wird es folgenden Konsequenzen ausgesetzt sein:
+    - **Erster Verstoß**: Das Team wird eine mündliche Verwarnung und eine Erinnerung an den Teamvertrag und die Projekterwartungen aussprechen.
+    - **Zweiter Verstoß**: Das Team wird eine schriftliche Verwarnung und eine Aufforderung zur Verbesserung aussprechen.
+    - **Dritter Verstoß**: Das Team wird das Problem dem Dozenten melden und eine Teamumstellung beantragen.
+
+# Abschlussklausel
+
+Wir verpflichten uns, diese Regeln und Erwartungen einzuhalten und uns gegenseitig für unsere Leistung verantwortlich zu machen. Wir verstehen, dass es, wenn wir diese Erwartungen nicht erfüllen, Konsequenzen geben wird. Diese Konsequenzen können bis zum Rauswurf eines Teammitglieds reichen. Wir verstehen auch, dass diese Regeln und Erwartungen bei Bedarf mit gegenseitigem Einverständnis geändert oder überarbeitet werden können.
+
+Unterschrieben von:
+
+Name 1
+
+Name 2
+
+Name 3
