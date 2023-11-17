@@ -1,0 +1,63 @@
+---
+title: "Teamvertrag"
+output: html_document
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Wir, die Mitglieder der Gruppe X, verpflichten uns, diese Regeln und Erwartungen zu befolgen, um ein erfolgreiches und angenehmes Teamprojekt zu gewährleisten.
+
+# Name der Teammitglieder
+
+
+
+# Projektziele
+
+
+# Kommunikation
+
+
+# Aufgabenverteilung
+
+Koordinator: **XX**
+
+**XX** wird das Team koordinieren, mit dem Dozenten und in das Team kommunizieren und die Aufgaben innerhalb des Teams verteilen.
+
+Die Verantwortlichen und Kontrolleure für die einzelne Aufgaben sind in der folgenden Tabelle dargestellt:
+
+```{r, echo = FALSE}
+# Erstellen Sie einen Datenrahmen mit den Aufgaben, Verantwortlichen, Deadlines und Checkern
+aufgaben <- data.frame(
+  Aufgabe = c("Aufgabe 1", "Aufgabe 5", "Aufgabe 7"),
+  Verantwortliche = c("AA", "BB", "CC"),
+  Deadline = c("18. November", "20. November", "22. November"),
+  Kontrolleur = c("CC", "AA", "AA")
+)
+
+# Erstellen Sie eine Tabelle mit der Funktion knitr::kable()
+knitr::kable(aufgaben, caption = "Aufgaben, Verantwortliche, Deadlines und Kontrolleur")
+```
+
+# Zusammenarbeit und Vorbereitung
+
+
+# Konfliktlösung
+
+
+# Konsequenzen
+
+
+# Abschlussklausel
+
+Wir verpflichten uns, diese Regeln und Erwartungen einzuhalten und uns gegenseitig für unsere Leistung verantwortlich zu machen. Wir verstehen, dass es, wenn wir diese Erwartungen nicht erfüllen, Konsequenzen geben wird. Diese Konsequenzen können bis zum Rauswurf eines Teammitglieds reichen. Wir verstehen auch, dass diese Regeln und Erwartungen bei Bedarf mit gegenseitigem Einverständnis geändert oder überarbeitet werden können.
+
+Unterschrieben von:
+
+Name 1
+
+Name 2
+
+Name 3

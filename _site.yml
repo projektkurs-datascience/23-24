@@ -43,6 +43,8 @@ navbar:
         href: ./tutorials/Team-Guidelines.html
       - text: "Beispielhafter Teamvertrag"
         href: ./tutorials/Teamvertrag_Beispiel.html
+      - text: "Template Teamvertrag"
+        href: ./tutorials/Teamvertrag.html
       - text: "Cheatsheets"
         href: https://rstudio.com/resources/cheatsheets/
   - text: Moodle WiSe
