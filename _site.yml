@@ -39,6 +39,10 @@ navbar:
         href: ./tutorials/Review_Reports.html
       - text: "Feedback zu den Review Report"
         href: ./tutorials/Gruppenfeedback.html
+      - text: "Teambuilding Guidlines"
+        href: ./tutorials/Team-Guidelines.html
+      - text: "Beispielhafter Teamvertrag"
+        href: ./tutorials/Teamvertrag_Beispiel.html
       - text: "Cheatsheets"
         href: https://rstudio.com/resources/cheatsheets/
   - text: Moodle WiSe
