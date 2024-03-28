@@ -402,7 +402,8 @@ bip_zeitreihe_namen %>%
   ggplot() +
   geom_line(aes(x = Jahr, y = durchschnitt, group = Regionalschluessel, color = ost_name)) +
   scale_color_manual(values = c("#D55E00", "#0072B2")) +
-  scale_y_continuous(trans = "log10") + 
+  scale_y_continuous(trans = "log10", breaks = c(5000,10000,15000,20000,25000,30000,35000, 40000, 45000), limits = c(5000,50000)) + 
+  scale_x_continuous(breaks = c(1992, 1995, 2000, 2005, 2010, 2015, 2020)) +
   theme_minimal() +
   theme(legend.position = "none") +
   labs(title = "Ein Vergleich des BIP pro Kopf von ost- und westdeutschen Landkreisen",
@@ -412,7 +413,7 @@ bip_zeitreihe_namen %>%
        y = "BIP pro Kopf") +
   geom_text(aes(x=2000, y=15000, label = "Durchschnitt für ostdeutsche Landkreise"), color = "#D55E00", hjust=0, size=4, alpha = 0.1) +
   geom_curve(aes(x = 2007, xend = 2005, y = 15500, yend = 18500), curvature = .3, color = "#D55E00", size = 0.1) +
-  geom_text(aes(x=1992, y=31000, label = "Durchschnitt für westdeutsche Landkreise"), color = "#0072B2", hjust=0, size=4, alpha = 0.1) +
+  geom_text(aes(x=1991, y=31000, label = "Durchschnitt für westdeutsche Landkreise"), color = "#0072B2", hjust=0, size=4, alpha = 0.1) +
   geom_curve(aes(x = 1995, xend = 1997, y = 29000, yend = 25000), curvature = .2, color = "#0072B2", size = 0.1)
 
 ```
