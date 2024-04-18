@@ -296,12 +296,14 @@ class: inverse, center, middle
 
 ## Gruppenzusammensetzung
 
-- Die Gruppen werden **zufällig zugeteilt**
+- Die Gruppen werden **bedingt zufällig zugeteilt**
+    - Jeder sollte ein Ranking seiner präferierten Gruppenmitglieder abgeben
+    - Weitere Informationen wie Zeiten an der Universität oder Interessen werden mit abgefragt und in der Zusammenstellung berücksichtigt
 - Es werden immer Gruppen von 3 Personen gebildet
 - Die Gruppenzusammensetzung gilt für das gesamte Semester
 - Die Gruppe bekommt **eine Note** für **alle Gruppenmitglieder**
   - Teamwork ist angesagt, mit der entsprechenden Koordination im Team
-  - Ein **Teamvertrag** soll wieder **verpflichtend** erstellt werden
+  - Dieses Semester muss **kein Teamvertrag** zu Beginn des Projekts eingereicht werden
 
 Nachdem die Gruppen gebildet wurden, werden die Tutoriumstermine auf Moodle bekannt gegeben und jede Gruppe kann sich für Tutoriumszeiten bewerben.
 
@@ -429,7 +431,7 @@ include_graphics(amazon)
 
 ---
 
-## Projekt 6: Frauen in Tech-Firmen
+## Projekt 6: Statusgüter und Selbstwertgefühl
 
 --
 
@@ -437,14 +439,14 @@ include_graphics(amazon)
 <br><br>
 In diesem Projekt widmen Sie sich der Frage:
 
-.alert[Warum gibt es so wenige Frauen in Tech-Firmen und wie kann dem entgegengewirkt werden?]
+.alert[Warum und von wem werden Statusgüter gekauft?]
 
-Zur Beantwortung dieser Frage werten Sie einen **bereitgestellten Datensatz** aus einem Feldexperiement in Peru aus. 
+Zur Beantwortung dieser Frage werten Sie einen **bereitgestellten Datensatz** aus einem Feldexperiement in Indonesien aus. 
 ]
 .pull-right[
 <br><br>
 ```{r, echo=FALSE, out.width="80%"}
-zensur <- "figs/Big_Tech_companies.jpg"
+zensur <- "figs/Credit_Cards.png"
 include_graphics(zensur)
 ```
 ]
