@@ -30,6 +30,10 @@ navbar:
         href: https://github.com/projektkurs-datascience/23-24/tree/main/problem-sets/ps3
       - text: "Problem Set 4"
         href: https://github.com/projektkurs-datascience/23-24/tree/main/problem-sets/ps4
+      - text: "Problem Set 5"
+        href: https://github.com/projektkurs-datascience/23-24/tree/main/problem-sets/ps5
+      - text: "Problem Set 6"
+        href: https://github.com/projektkurs-datascience/23-24/tree/main/problem-sets/ps6
   - text: Tutorials
     icon: fa-users
     menu:
