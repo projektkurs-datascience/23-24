@@ -141,7 +141,7 @@ bip_wachstum <- bip_zeitreihe %>%
   arrange(Jahr) %>%
   mutate( bip_wachstum = 100*(bip - lag(bip)) / bip ) %>%
   ungroup() %>%
-  filter( Jahr == 2017 ) %>%
+  filter( Jahr == 2021 ) %>%
   select(Regionalschluessel, bip_wachstum, Jahr)
 
 gesamtdaten <- left_join(gesamtdaten, bip_wachstum, by = "Regionalschluessel")
@@ -299,7 +299,7 @@ Wobei wir die Arbeitslosenquote ( $y_i$ ) auf das BIP Wachstum ( $x_i$ ) regress
 ```{r, echo=T, eval=F,message = FALSE, warnign = FALSE,results='asis'}
 bip <- lm(alo_quote ~ bip_wachstum, data = gesamtdaten)
 
-modelsummary(list(bip, bip, bip), 
+modelsummary(list(bip, bip, bip),
           type = "html",
           statistic = NULL,
           fmt = 2,
@@ -309,15 +309,14 @@ modelsummary(list(bip, bip, bip),
           title = "Arbeitslosigkeit auf BIP-Wachstum",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("bip_wachstum" = "BIP-Wachstum", "(Intercept)" = "Konstante")
-          ) %>%
-  add_header_above(c(" " = 1,"Alo-quote" = 3))
+          )
 ```
 
 ---
 
 ## Arbeitslosenquote auf das BIP Wachstum regressieren
 
-```{r, echo = FALSE, message = FALSE, warnign = FALSE,results='asis'}
+```{r, echo = FALSE, message = FALSE, warnign = FALSE}
 bip <- lm(alo_quote ~ bip_wachstum, data = gesamtdaten)
 
 modelsummary(list(bip, bip, bip), 
@@ -329,8 +328,7 @@ modelsummary(list(bip, bip, bip),
           title = "Arbeitslosigkeit auf BIP-Wachstum",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("bip_wachstum" = "BIP-Wachstum", "(Intercept)" = "Konstante")
-          ) %>%
-  add_header_above(c(" " = 1,"Alo-quote" = 3))
+          ) 
 ```
 
 ---
@@ -347,8 +345,7 @@ modelsummary(bip,
           fmt = 2,
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("bip_wachstum" = "BIP-Wachstum", "(Intercept)" = "Konstante")
-          ) %>%
-  add_header_above(c(" " = 1,"Alo-quote" = 1))
+          ) 
 ```
 
 ---
@@ -365,8 +362,7 @@ modelsummary(bip,
           fmt = 2,
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("bip_wachstum" = "BIP-Wachstum", "(Intercept)" = "Konstante")
-          ) %>%
-  add_header_above(c(" " = 1,"Alo-quote" = 1))
+          ) 
 ```
 
 ---
@@ -437,8 +433,7 @@ modelsummary(schulden,
           title = "Arbeitslosigkeit auf Anteil der Schulden pro Landkreis",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "(Intercept)" = "Konstante")
-          ) %>%
-  add_header_above(c(" " = 1,"Alo-quote" = 1))
+          ) 
 ```
 
 ---
@@ -456,8 +451,7 @@ modelsummary(schulden,
           title = "Arbeitslosigkeit auf Anteil der Schulden pro Landkreis",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "(Intercept)" = "Konstante")
-          ) %>%
-  add_header_above(c(" " = 1,"Alo-quote" = 1))
+          )
 ```
 
 
@@ -518,8 +512,7 @@ modelsummary(multi,
           title = "Arbeitslosigkeit auf Anteil Schulden und BIP-Wachstum",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "bip_wachstum" = "BIP-Wachstum", "(Intercept)" = "Konstante")
-          ) %>%
-  add_header_above(c(" " = 1,"Alo-quote" = 1))
+          ) 
 ```
 
 ---
@@ -538,8 +531,7 @@ modelsummary(multi,
           title = "Arbeitslosigkeit auf Anteil Schulden und BIP-Wachstum",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "bip_wachstum" = "BIP-Wachstum", "(Intercept)" = "Konstante")
-          ) %>%
-  add_header_above(c(" " = 1,"Alo-quote" = 1))
+          )
 ```
 ]
 
@@ -581,8 +573,7 @@ modelsummary(schulden,
           title = "Arbeitslosigkeit mit Interaktionstermen",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "ost1" = "Ostdeutschland", "(Intercept)" = "Konstante")
-          ) %>%
-  add_header_above(c(" " = 1,"Alo-quote" = 1))
+          ) 
 
 ```
 
@@ -603,8 +594,7 @@ modelsummary(schulden,
           title = "Arbeitslosigkeit mit Interaktionstermen",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "ost1" = "Ostdeutschland", "(Intercept)" = "Konstante")
-          ) %>%
-  add_header_above(c(" " = 1,"Alo-quote" = 1))
+          ) 
 ```
 ]
 
@@ -647,8 +637,7 @@ modelsummary(list(schulden, interaktion, west, ost),
           title = "Arbeitslosigkeit mit Interaktionstermen",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "ost1" = "Ostdeutschland", "(Intercept)" = "Konstante")
-          ) %>%
-  add_header_above(c(" " = 1,"Alo-quote" = 4))
+          ) 
 ```
 
 
@@ -670,8 +659,7 @@ modelsummary(list(schulden, interaktion, west, ost),
           title = "Arbeitslosigkeit mit Interaktionstermen",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "ost1" = "Ostdeutschland", "(Intercept)" = "Konstante")
-          ) %>%
-  add_header_above(c(" " = 1,"Alo-quote" = 4))
+          ) 
 ```
 
 ---
@@ -698,8 +686,7 @@ modelsummary(list(schulden, interaktion, west, ost),
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "ost1" = "Ostdeutschland", "(Intercept)" = "Konstante"),
           gof_map = gm
-          ) %>%
-  add_header_above(c(" " = 1,"Alo-quote" = 4))
+          ) 
 ```
 
 ---
@@ -726,8 +713,7 @@ modelsummary(list(schulden, interaktion, west, ost),
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "ost1" = "Ostdeutschland", "(Intercept)" = "Konstante"),
           gof_map = gm
-          ) %>%
-  add_header_above(c(" " = 1,"Alo-quote" = 4))
+          )
 ```
 
 ---

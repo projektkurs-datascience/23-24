@@ -4,8 +4,6 @@
     <title>Case-Study zur Arbeitslosigkeit in Deutschland</title>
     <meta charset="utf-8" />
     <script src="libs/header-attrs-2.25/header-attrs.js"></script>
-    <script src="libs/kePrint-0.0.1/kePrint.js"></script>
-    <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/5235085b15.js"></script>
     <link rel="stylesheet" href="style/css/uni-ulm.css" type="text/css" />
     <link rel="stylesheet" href="style/css/my-fonts.css" type="text/css" />
@@ -141,7 +139,7 @@ bip_wachstum &lt;- bip_zeitreihe %&gt;%
   arrange(Jahr) %&gt;%
   mutate( bip_wachstum = 100*(bip - lag(bip)) / bip ) %&gt;%
   ungroup() %&gt;%
-  filter( Jahr == 2017 ) %&gt;%
+  filter( Jahr == 2021 ) %&gt;%
   select(Regionalschluessel, bip_wachstum, Jahr)
 
 gesamtdaten &lt;- left_join(gesamtdaten, bip_wachstum, by = "Regionalschluessel")
@@ -242,8 +240,8 @@ fashion(korrelationen)
 ```
 ##              term bip_wachstum alo_quote anteil_schulden
 ## 1    bip_wachstum                                       
-## 2       alo_quote         -.11                          
-## 3 anteil_schulden         -.14       .60
+## 2       alo_quote         -.01                          
+## 3 anteil_schulden         -.09       .60
 ```
 
 ---
@@ -288,7 +286,7 @@ Wobei wir die Arbeitslosenquote ( `\(y_i\)` ) auf das BIP Wachstum ( `\(x_i\)` )
 ```r
 bip &lt;- lm(alo_quote ~ bip_wachstum, data = gesamtdaten)
 
-modelsummary(list(bip, bip, bip), 
+modelsummary(list(bip, bip, bip),
           type = "html",
           statistic = NULL,
           fmt = 2,
@@ -298,73 +296,191 @@ modelsummary(list(bip, bip, bip),
           title = "Arbeitslosigkeit auf BIP-Wachstum",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("bip_wachstum" = "BIP-Wachstum", "(Intercept)" = "Konstante")
-          ) %&gt;%
-  add_header_above(c(" " = 1,"Alo-quote" = 3))
+          )
 ```
 
 ---
 
 ## Arbeitslosenquote auf das BIP Wachstum regressieren
 
-&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
-&lt;caption&gt;Arbeitslosigkeit auf BIP-Wachstum&lt;/caption&gt;
- &lt;thead&gt;
-&lt;tr&gt;
-&lt;th style="empty-cells: hide;border-bottom:hidden;" colspan="1"&gt;&lt;/th&gt;
-&lt;th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3"&gt;&lt;div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; "&gt;Alo-quote&lt;/div&gt;&lt;/th&gt;
-&lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;  (1) &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;   (2) &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;   (3) &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Konstante &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 5.64 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 5.64*** &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 5.64 [5.25, 6.04] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; (0.20) &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; (0.20) &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; (0.20) &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; BIP-Wachstum &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; −0.09 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; −0.09* &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; −0.09 [−0.18, −0.01] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;box-shadow: 0px 1.5px"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt; (0.04) &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt; (0.04) &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt; (0.04) &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Num.Obs. &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 398 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 398 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 398 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.011 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.011 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.011 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R2 Adj. &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.009 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.009 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.009 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+
+```{=html}
+&lt;!DOCTYPE html&gt; 
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;tinytable_5iwlvhpsfltf4gvezvjd&lt;/title&gt;
+    &lt;style&gt;
+.table td.tinytable_css_5h12n7bgjung23tc60i5, .table th.tinytable_css_5h12n7bgjung23tc60i5 {    border-bottom: solid 0.1em #d3d8dc; }
+.table td.tinytable_css_1mney509mw3v9ke61ss2, .table th.tinytable_css_1mney509mw3v9ke61ss2 {    text-align: left; }
+.table td.tinytable_css_you1i6lzpj969k79fbg6, .table th.tinytable_css_you1i6lzpj969k79fbg6 {    text-align: center; }
+.table td.tinytable_css_wcyz4ixva5hj2q5x09ys, .table th.tinytable_css_wcyz4ixva5hj2q5x09ys {    text-align: center; }
+.table td.tinytable_css_fcvs7ag2881nzk984q8d, .table th.tinytable_css_fcvs7ag2881nzk984q8d {    text-align: center; }
+.table td.tinytable_css_8sr2dp5w3trfn9roo8kv, .table th.tinytable_css_8sr2dp5w3trfn9roo8kv {    border-bottom: solid 0.05em black; }
+    &lt;/style&gt;
+    &lt;script src="https://polyfill.io/v3/polyfill.min.js?features=es6"&gt;&lt;/script&gt;
+    &lt;script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    &lt;/script&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;div class="container"&gt;
+      &lt;table class="table table-borderless" id="tinytable_5iwlvhpsfltf4gvezvjd" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing='true'&gt;
+        &lt;thead&gt;
+        &lt;caption&gt;Arbeitslosigkeit auf BIP-Wachstum&lt;/caption&gt;
+              &lt;tr&gt;
+                &lt;th scope="col"&gt; &lt;/th&gt;
+                &lt;th scope="col"&gt;(1)&lt;/th&gt;
+                &lt;th scope="col"&gt;(2)&lt;/th&gt;
+                &lt;th scope="col"&gt;(3)&lt;/th&gt;
+              &lt;/tr&gt;
+        &lt;/thead&gt;
+        
+        &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Konstante   &lt;/td&gt;
+                  &lt;td&gt;5.32  &lt;/td&gt;
+                  &lt;td&gt;5.32***&lt;/td&gt;
+                  &lt;td&gt;5.32 [4.93, 5.71]  &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;(0.20)&lt;/td&gt;
+                  &lt;td&gt;(0.20) &lt;/td&gt;
+                  &lt;td&gt;(0.20)             &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;BIP-Wachstum&lt;/td&gt;
+                  &lt;td&gt;-0.01 &lt;/td&gt;
+                  &lt;td&gt;-0.01  &lt;/td&gt;
+                  &lt;td&gt;-0.01 [-0.07, 0.06]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;(0.03)&lt;/td&gt;
+                  &lt;td&gt;(0.03) &lt;/td&gt;
+                  &lt;td&gt;(0.03)             &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Num.Obs.    &lt;/td&gt;
+                  &lt;td&gt;398   &lt;/td&gt;
+                  &lt;td&gt;398    &lt;/td&gt;
+                  &lt;td&gt;398                &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;R2          &lt;/td&gt;
+                  &lt;td&gt;0.000 &lt;/td&gt;
+                  &lt;td&gt;0.000  &lt;/td&gt;
+                  &lt;td&gt;0.000              &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;R2 Adj.     &lt;/td&gt;
+                  &lt;td&gt;-0.002&lt;/td&gt;
+                  &lt;td&gt;-0.002 &lt;/td&gt;
+                  &lt;td&gt;-0.002             &lt;/td&gt;
+                &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+      function styleCell_tinytable_ya0tmq7y0igvqut37zuq(i, j, css_id) {
+        var table = document.getElementById("tinytable_5iwlvhpsfltf4gvezvjd");
+        table.rows[i].cells[j].classList.add(css_id);
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_5iwlvhpsfltf4gvezvjd');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret &lt;br&gt;
+        newCell.innerHTML = content;
+      }
+      function spanCell_tinytable_ya0tmq7y0igvqut37zuq(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_5iwlvhpsfltf4gvezvjd");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r &lt; rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c &gt; 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r &gt; 0) {
+            for (let c = colspan - 1; c &gt;= 0; c--) {
+              if (table.rows[i + r] &amp;&amp; table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(0, 0, 'tinytable_css_5h12n7bgjung23tc60i5') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(0, 1, 'tinytable_css_5h12n7bgjung23tc60i5') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(0, 2, 'tinytable_css_5h12n7bgjung23tc60i5') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(0, 3, 'tinytable_css_5h12n7bgjung23tc60i5') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(0, 0, 'tinytable_css_1mney509mw3v9ke61ss2') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(1, 0, 'tinytable_css_1mney509mw3v9ke61ss2') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(2, 0, 'tinytable_css_1mney509mw3v9ke61ss2') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(3, 0, 'tinytable_css_1mney509mw3v9ke61ss2') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(4, 0, 'tinytable_css_1mney509mw3v9ke61ss2') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(5, 0, 'tinytable_css_1mney509mw3v9ke61ss2') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(6, 0, 'tinytable_css_1mney509mw3v9ke61ss2') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(7, 0, 'tinytable_css_1mney509mw3v9ke61ss2') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(0, 1, 'tinytable_css_you1i6lzpj969k79fbg6') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(1, 1, 'tinytable_css_you1i6lzpj969k79fbg6') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(2, 1, 'tinytable_css_you1i6lzpj969k79fbg6') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(3, 1, 'tinytable_css_you1i6lzpj969k79fbg6') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(4, 1, 'tinytable_css_you1i6lzpj969k79fbg6') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(5, 1, 'tinytable_css_you1i6lzpj969k79fbg6') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(6, 1, 'tinytable_css_you1i6lzpj969k79fbg6') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(7, 1, 'tinytable_css_you1i6lzpj969k79fbg6') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(0, 2, 'tinytable_css_wcyz4ixva5hj2q5x09ys') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(1, 2, 'tinytable_css_wcyz4ixva5hj2q5x09ys') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(2, 2, 'tinytable_css_wcyz4ixva5hj2q5x09ys') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(3, 2, 'tinytable_css_wcyz4ixva5hj2q5x09ys') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(4, 2, 'tinytable_css_wcyz4ixva5hj2q5x09ys') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(5, 2, 'tinytable_css_wcyz4ixva5hj2q5x09ys') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(6, 2, 'tinytable_css_wcyz4ixva5hj2q5x09ys') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(7, 2, 'tinytable_css_wcyz4ixva5hj2q5x09ys') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(0, 3, 'tinytable_css_fcvs7ag2881nzk984q8d') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(1, 3, 'tinytable_css_fcvs7ag2881nzk984q8d') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(2, 3, 'tinytable_css_fcvs7ag2881nzk984q8d') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(3, 3, 'tinytable_css_fcvs7ag2881nzk984q8d') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(4, 3, 'tinytable_css_fcvs7ag2881nzk984q8d') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(5, 3, 'tinytable_css_fcvs7ag2881nzk984q8d') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(6, 3, 'tinytable_css_fcvs7ag2881nzk984q8d') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(7, 3, 'tinytable_css_fcvs7ag2881nzk984q8d') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(4, 0, 'tinytable_css_8sr2dp5w3trfn9roo8kv') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(4, 1, 'tinytable_css_8sr2dp5w3trfn9roo8kv') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(4, 2, 'tinytable_css_8sr2dp5w3trfn9roo8kv') })
+window.addEventListener('load', function () { styleCell_tinytable_ya0tmq7y0igvqut37zuq(4, 3, 'tinytable_css_8sr2dp5w3trfn9roo8kv') })
+    &lt;/script&gt;
+
+  &lt;/body&gt;
+
+&lt;/html&gt;
+```
 
 ---
 
@@ -381,56 +497,153 @@ modelsummary(bip,
           fmt = 2,
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("bip_wachstum" = "BIP-Wachstum", "(Intercept)" = "Konstante")
-          ) %&gt;%
-  add_header_above(c(" " = 1,"Alo-quote" = 1))
+          ) 
 ```
 
 ---
 
 ## Arbeitslosenquote auf das BIP Wachstum regressieren
 
-&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
- &lt;thead&gt;
-&lt;tr&gt;
-&lt;th style="empty-cells: hide;border-bottom:hidden;" colspan="1"&gt;&lt;/th&gt;
-&lt;th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"&gt;&lt;div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; "&gt;Alo-quote&lt;/div&gt;&lt;/th&gt;
-&lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;  (1) &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Konstante &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 5.64 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [5.13, 6.16] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; BIP-Wachstum &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; −0.09 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;box-shadow: 0px 1.5px"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt; [−0.21, 0.02] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Num.Obs. &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 398 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.011 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R2 Adj. &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.009 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+
+```{=html}
+&lt;!DOCTYPE html&gt; 
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;tinytable_ou7urknsqz96pol1l2fa&lt;/title&gt;
+    &lt;style&gt;
+.table td.tinytable_css_ffcugyjra25ahg8cnzv2, .table th.tinytable_css_ffcugyjra25ahg8cnzv2 {    border-bottom: solid 0.1em #d3d8dc; }
+.table td.tinytable_css_rkfie5ex279t1acc8i4v, .table th.tinytable_css_rkfie5ex279t1acc8i4v {    text-align: left; }
+.table td.tinytable_css_0fxk3ssuqeqikalevz9d, .table th.tinytable_css_0fxk3ssuqeqikalevz9d {    text-align: center; }
+.table td.tinytable_css_nlp5f7jzsq0ey28wygxv, .table th.tinytable_css_nlp5f7jzsq0ey28wygxv {    border-bottom: solid 0.05em black; }
+    &lt;/style&gt;
+    &lt;script src="https://polyfill.io/v3/polyfill.min.js?features=es6"&gt;&lt;/script&gt;
+    &lt;script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    &lt;/script&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;div class="container"&gt;
+      &lt;table class="table table-borderless" id="tinytable_ou7urknsqz96pol1l2fa" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing='true'&gt;
+        &lt;thead&gt;
+        
+              &lt;tr&gt;
+                &lt;th scope="col"&gt; &lt;/th&gt;
+                &lt;th scope="col"&gt;(1)&lt;/th&gt;
+              &lt;/tr&gt;
+        &lt;/thead&gt;
+        
+        &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Konstante   &lt;/td&gt;
+                  &lt;td&gt;5.32         &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;[4.81, 5.83] &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;BIP-Wachstum&lt;/td&gt;
+                  &lt;td&gt;-0.01        &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;[-0.09, 0.08]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Num.Obs.    &lt;/td&gt;
+                  &lt;td&gt;398          &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;R2          &lt;/td&gt;
+                  &lt;td&gt;0.000        &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;R2 Adj.     &lt;/td&gt;
+                  &lt;td&gt;-0.002       &lt;/td&gt;
+                &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+      function styleCell_tinytable_8hhecf0qb27k0jm41m9p(i, j, css_id) {
+        var table = document.getElementById("tinytable_ou7urknsqz96pol1l2fa");
+        table.rows[i].cells[j].classList.add(css_id);
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_ou7urknsqz96pol1l2fa');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret &lt;br&gt;
+        newCell.innerHTML = content;
+      }
+      function spanCell_tinytable_8hhecf0qb27k0jm41m9p(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_ou7urknsqz96pol1l2fa");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r &lt; rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c &gt; 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r &gt; 0) {
+            for (let c = colspan - 1; c &gt;= 0; c--) {
+              if (table.rows[i + r] &amp;&amp; table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(0, 0, 'tinytable_css_ffcugyjra25ahg8cnzv2') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(0, 1, 'tinytable_css_ffcugyjra25ahg8cnzv2') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(0, 0, 'tinytable_css_rkfie5ex279t1acc8i4v') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(1, 0, 'tinytable_css_rkfie5ex279t1acc8i4v') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(2, 0, 'tinytable_css_rkfie5ex279t1acc8i4v') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(3, 0, 'tinytable_css_rkfie5ex279t1acc8i4v') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(4, 0, 'tinytable_css_rkfie5ex279t1acc8i4v') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(5, 0, 'tinytable_css_rkfie5ex279t1acc8i4v') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(6, 0, 'tinytable_css_rkfie5ex279t1acc8i4v') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(7, 0, 'tinytable_css_rkfie5ex279t1acc8i4v') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(0, 1, 'tinytable_css_0fxk3ssuqeqikalevz9d') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(1, 1, 'tinytable_css_0fxk3ssuqeqikalevz9d') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(2, 1, 'tinytable_css_0fxk3ssuqeqikalevz9d') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(3, 1, 'tinytable_css_0fxk3ssuqeqikalevz9d') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(4, 1, 'tinytable_css_0fxk3ssuqeqikalevz9d') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(5, 1, 'tinytable_css_0fxk3ssuqeqikalevz9d') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(6, 1, 'tinytable_css_0fxk3ssuqeqikalevz9d') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(7, 1, 'tinytable_css_0fxk3ssuqeqikalevz9d') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(4, 0, 'tinytable_css_nlp5f7jzsq0ey28wygxv') })
+window.addEventListener('load', function () { styleCell_tinytable_8hhecf0qb27k0jm41m9p(4, 1, 'tinytable_css_nlp5f7jzsq0ey28wygxv') })
+    &lt;/script&gt;
+
+  &lt;/body&gt;
+
+&lt;/html&gt;
+```
 
 ---
 
@@ -501,57 +714,153 @@ modelsummary(schulden,
           title = "Arbeitslosigkeit auf Anteil der Schulden pro Landkreis",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "(Intercept)" = "Konstante")
-          ) %&gt;%
-  add_header_above(c(" " = 1,"Alo-quote" = 1))
+          ) 
 ```
 
 ---
 
 ## Arbeitslosenquote auf öffentliche Schulden regressieren
 
-&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
-&lt;caption&gt;Arbeitslosigkeit auf Anteil der Schulden pro Landkreis&lt;/caption&gt;
- &lt;thead&gt;
-&lt;tr&gt;
-&lt;th style="empty-cells: hide;border-bottom:hidden;" colspan="1"&gt;&lt;/th&gt;
-&lt;th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"&gt;&lt;div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; "&gt;Alo-quote&lt;/div&gt;&lt;/th&gt;
-&lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;  (1) &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Konstante &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 3.48 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [3.10, 3.85] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Anteil der Schulden &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.24 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;box-shadow: 0px 1.5px"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt; [0.20, 0.28] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Num.Obs. &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 396 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.360 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R2 Adj. &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.359 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+
+```{=html}
+&lt;!DOCTYPE html&gt; 
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;tinytable_eah0njyapsllqueru1je&lt;/title&gt;
+    &lt;style&gt;
+.table td.tinytable_css_o9pfjjiyj8n94hhazsf7, .table th.tinytable_css_o9pfjjiyj8n94hhazsf7 {    border-bottom: solid 0.1em #d3d8dc; }
+.table td.tinytable_css_fuu2u7pgsah2leaf2trg, .table th.tinytable_css_fuu2u7pgsah2leaf2trg {    text-align: left; }
+.table td.tinytable_css_5danioa0l1wpx7r92yo3, .table th.tinytable_css_5danioa0l1wpx7r92yo3 {    text-align: center; }
+.table td.tinytable_css_4kcgdnyfmgjpdc489v65, .table th.tinytable_css_4kcgdnyfmgjpdc489v65 {    border-bottom: solid 0.05em black; }
+    &lt;/style&gt;
+    &lt;script src="https://polyfill.io/v3/polyfill.min.js?features=es6"&gt;&lt;/script&gt;
+    &lt;script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    &lt;/script&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;div class="container"&gt;
+      &lt;table class="table table-borderless" id="tinytable_eah0njyapsllqueru1je" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing='true'&gt;
+        &lt;thead&gt;
+        &lt;caption&gt;Arbeitslosigkeit auf Anteil der Schulden pro Landkreis&lt;/caption&gt;
+              &lt;tr&gt;
+                &lt;th scope="col"&gt; &lt;/th&gt;
+                &lt;th scope="col"&gt;(1)&lt;/th&gt;
+              &lt;/tr&gt;
+        &lt;/thead&gt;
+        
+        &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Konstante          &lt;/td&gt;
+                  &lt;td&gt;3.48        &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                   &lt;/td&gt;
+                  &lt;td&gt;[3.10, 3.85]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Anteil der Schulden&lt;/td&gt;
+                  &lt;td&gt;0.24        &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                   &lt;/td&gt;
+                  &lt;td&gt;[0.20, 0.28]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Num.Obs.           &lt;/td&gt;
+                  &lt;td&gt;396         &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;R2                 &lt;/td&gt;
+                  &lt;td&gt;0.360       &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;R2 Adj.            &lt;/td&gt;
+                  &lt;td&gt;0.359       &lt;/td&gt;
+                &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+      function styleCell_tinytable_h1bsat35xq8v97une620(i, j, css_id) {
+        var table = document.getElementById("tinytable_eah0njyapsllqueru1je");
+        table.rows[i].cells[j].classList.add(css_id);
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_eah0njyapsllqueru1je');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret &lt;br&gt;
+        newCell.innerHTML = content;
+      }
+      function spanCell_tinytable_h1bsat35xq8v97une620(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_eah0njyapsllqueru1je");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r &lt; rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c &gt; 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r &gt; 0) {
+            for (let c = colspan - 1; c &gt;= 0; c--) {
+              if (table.rows[i + r] &amp;&amp; table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(0, 0, 'tinytable_css_o9pfjjiyj8n94hhazsf7') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(0, 1, 'tinytable_css_o9pfjjiyj8n94hhazsf7') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(0, 0, 'tinytable_css_fuu2u7pgsah2leaf2trg') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(1, 0, 'tinytable_css_fuu2u7pgsah2leaf2trg') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(2, 0, 'tinytable_css_fuu2u7pgsah2leaf2trg') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(3, 0, 'tinytable_css_fuu2u7pgsah2leaf2trg') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(4, 0, 'tinytable_css_fuu2u7pgsah2leaf2trg') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(5, 0, 'tinytable_css_fuu2u7pgsah2leaf2trg') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(6, 0, 'tinytable_css_fuu2u7pgsah2leaf2trg') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(7, 0, 'tinytable_css_fuu2u7pgsah2leaf2trg') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(0, 1, 'tinytable_css_5danioa0l1wpx7r92yo3') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(1, 1, 'tinytable_css_5danioa0l1wpx7r92yo3') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(2, 1, 'tinytable_css_5danioa0l1wpx7r92yo3') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(3, 1, 'tinytable_css_5danioa0l1wpx7r92yo3') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(4, 1, 'tinytable_css_5danioa0l1wpx7r92yo3') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(5, 1, 'tinytable_css_5danioa0l1wpx7r92yo3') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(6, 1, 'tinytable_css_5danioa0l1wpx7r92yo3') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(7, 1, 'tinytable_css_5danioa0l1wpx7r92yo3') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(4, 0, 'tinytable_css_4kcgdnyfmgjpdc489v65') })
+window.addEventListener('load', function () { styleCell_tinytable_h1bsat35xq8v97une620(4, 1, 'tinytable_css_4kcgdnyfmgjpdc489v65') })
+    &lt;/script&gt;
+
+  &lt;/body&gt;
+
+&lt;/html&gt;
+```
 
 
 ---
@@ -612,8 +921,7 @@ modelsummary(multi,
           title = "Arbeitslosigkeit auf Anteil Schulden und BIP-Wachstum",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "bip_wachstum" = "BIP-Wachstum", "(Intercept)" = "Konstante")
-          ) %&gt;%
-  add_header_above(c(" " = 1,"Alo-quote" = 1))
+          ) 
 ```
 
 ---
@@ -621,57 +929,158 @@ modelsummary(multi,
 ## Multiple lineare Regression
 
 .pull-left[
-&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
-&lt;caption&gt;Arbeitslosigkeit auf Anteil Schulden und BIP-Wachstum&lt;/caption&gt;
- &lt;thead&gt;
-&lt;tr&gt;
-&lt;th style="empty-cells: hide;border-bottom:hidden;" colspan="1"&gt;&lt;/th&gt;
-&lt;th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"&gt;&lt;div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; "&gt;Alo-quote&lt;/div&gt;&lt;/th&gt;
-&lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;  (1) &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Konstante &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 3.55 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [3.00, 4.10] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Anteil der Schulden &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.24 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [0.20, 0.28] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; BIP-Wachstum &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; −0.02 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;box-shadow: 0px 1.5px"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt; [−0.11, 0.08] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Num.Obs. &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 396 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.361 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R2 Adj. &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.357 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+
+```{=html}
+&lt;!DOCTYPE html&gt; 
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;tinytable_98efj84wk45qto3hqu42&lt;/title&gt;
+    &lt;style&gt;
+.table td.tinytable_css_wky3xrii8ur0qiqgld3k, .table th.tinytable_css_wky3xrii8ur0qiqgld3k {    border-bottom: solid 0.1em #d3d8dc; }
+.table td.tinytable_css_lfwj7y6cd0whzl7mmvyr, .table th.tinytable_css_lfwj7y6cd0whzl7mmvyr {    text-align: left; }
+.table td.tinytable_css_zkcl3vgi3mb7713gyau4, .table th.tinytable_css_zkcl3vgi3mb7713gyau4 {    text-align: center; }
+.table td.tinytable_css_rptyolm9gmo6669rpble, .table th.tinytable_css_rptyolm9gmo6669rpble {    border-bottom: solid 0.05em black; }
+    &lt;/style&gt;
+    &lt;script src="https://polyfill.io/v3/polyfill.min.js?features=es6"&gt;&lt;/script&gt;
+    &lt;script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    &lt;/script&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;div class="container"&gt;
+      &lt;table class="table table-borderless" id="tinytable_98efj84wk45qto3hqu42" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing='true'&gt;
+        &lt;thead&gt;
+        &lt;caption&gt;Arbeitslosigkeit auf Anteil Schulden und BIP-Wachstum&lt;/caption&gt;
+              &lt;tr&gt;
+                &lt;th scope="col"&gt; &lt;/th&gt;
+                &lt;th scope="col"&gt;(1)&lt;/th&gt;
+              &lt;/tr&gt;
+        &lt;/thead&gt;
+        
+        &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Konstante          &lt;/td&gt;
+                  &lt;td&gt;3.33         &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                   &lt;/td&gt;
+                  &lt;td&gt;[2.80, 3.86] &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Anteil der Schulden&lt;/td&gt;
+                  &lt;td&gt;0.24         &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                   &lt;/td&gt;
+                  &lt;td&gt;[0.20, 0.28] &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;BIP-Wachstum       &lt;/td&gt;
+                  &lt;td&gt;0.03         &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                   &lt;/td&gt;
+                  &lt;td&gt;[-0.04, 0.09]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Num.Obs.           &lt;/td&gt;
+                  &lt;td&gt;396          &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;R2                 &lt;/td&gt;
+                  &lt;td&gt;0.362        &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;R2 Adj.            &lt;/td&gt;
+                  &lt;td&gt;0.359        &lt;/td&gt;
+                &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+      function styleCell_tinytable_sgoitmhl0m9cc97d0frg(i, j, css_id) {
+        var table = document.getElementById("tinytable_98efj84wk45qto3hqu42");
+        table.rows[i].cells[j].classList.add(css_id);
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_98efj84wk45qto3hqu42');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret &lt;br&gt;
+        newCell.innerHTML = content;
+      }
+      function spanCell_tinytable_sgoitmhl0m9cc97d0frg(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_98efj84wk45qto3hqu42");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r &lt; rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c &gt; 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r &gt; 0) {
+            for (let c = colspan - 1; c &gt;= 0; c--) {
+              if (table.rows[i + r] &amp;&amp; table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(0, 0, 'tinytable_css_wky3xrii8ur0qiqgld3k') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(0, 1, 'tinytable_css_wky3xrii8ur0qiqgld3k') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(0, 0, 'tinytable_css_lfwj7y6cd0whzl7mmvyr') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(1, 0, 'tinytable_css_lfwj7y6cd0whzl7mmvyr') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(2, 0, 'tinytable_css_lfwj7y6cd0whzl7mmvyr') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(3, 0, 'tinytable_css_lfwj7y6cd0whzl7mmvyr') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(4, 0, 'tinytable_css_lfwj7y6cd0whzl7mmvyr') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(5, 0, 'tinytable_css_lfwj7y6cd0whzl7mmvyr') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(6, 0, 'tinytable_css_lfwj7y6cd0whzl7mmvyr') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(7, 0, 'tinytable_css_lfwj7y6cd0whzl7mmvyr') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(8, 0, 'tinytable_css_lfwj7y6cd0whzl7mmvyr') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(9, 0, 'tinytable_css_lfwj7y6cd0whzl7mmvyr') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(0, 1, 'tinytable_css_zkcl3vgi3mb7713gyau4') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(1, 1, 'tinytable_css_zkcl3vgi3mb7713gyau4') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(2, 1, 'tinytable_css_zkcl3vgi3mb7713gyau4') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(3, 1, 'tinytable_css_zkcl3vgi3mb7713gyau4') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(4, 1, 'tinytable_css_zkcl3vgi3mb7713gyau4') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(5, 1, 'tinytable_css_zkcl3vgi3mb7713gyau4') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(6, 1, 'tinytable_css_zkcl3vgi3mb7713gyau4') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(7, 1, 'tinytable_css_zkcl3vgi3mb7713gyau4') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(8, 1, 'tinytable_css_zkcl3vgi3mb7713gyau4') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(9, 1, 'tinytable_css_zkcl3vgi3mb7713gyau4') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(6, 0, 'tinytable_css_rptyolm9gmo6669rpble') })
+window.addEventListener('load', function () { styleCell_tinytable_sgoitmhl0m9cc97d0frg(6, 1, 'tinytable_css_rptyolm9gmo6669rpble') })
+    &lt;/script&gt;
+
+  &lt;/body&gt;
+
+&lt;/html&gt;
+```
 ]
 
 --
@@ -712,8 +1121,7 @@ modelsummary(schulden,
           title = "Arbeitslosigkeit mit Interaktionstermen",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "ost1" = "Ostdeutschland", "(Intercept)" = "Konstante")
-          ) %&gt;%
-  add_header_above(c(" " = 1,"Alo-quote" = 1))
+          ) 
 ```
 
 ---
@@ -721,57 +1129,158 @@ modelsummary(schulden,
 ## Sample Splits und Interaktionsmodell
 
 .pull-left[
-&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
-&lt;caption&gt;Arbeitslosigkeit mit Interaktionstermen&lt;/caption&gt;
- &lt;thead&gt;
-&lt;tr&gt;
-&lt;th style="empty-cells: hide;border-bottom:hidden;" colspan="1"&gt;&lt;/th&gt;
-&lt;th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"&gt;&lt;div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; "&gt;Alo-quote&lt;/div&gt;&lt;/th&gt;
-&lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;  (1) &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Konstante &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 3.31 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [2.95, 3.67] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Anteil der Schulden &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.23 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [0.19, 0.27] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ostdeutschland &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 1.36 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;box-shadow: 0px 1.5px"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt; [0.84, 1.88] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Num.Obs. &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 396 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.427 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R2 Adj. &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.424 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+
+```{=html}
+&lt;!DOCTYPE html&gt; 
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;tinytable_zjcym4fccdke2mm5d12h&lt;/title&gt;
+    &lt;style&gt;
+.table td.tinytable_css_xcqcic84i3xznwkagmm7, .table th.tinytable_css_xcqcic84i3xznwkagmm7 {    border-bottom: solid 0.1em #d3d8dc; }
+.table td.tinytable_css_ilrgls4c330h4ko7hvb9, .table th.tinytable_css_ilrgls4c330h4ko7hvb9 {    text-align: left; }
+.table td.tinytable_css_0tqxvymxi1ubbziv65ns, .table th.tinytable_css_0tqxvymxi1ubbziv65ns {    text-align: center; }
+.table td.tinytable_css_4l2z4657j8odcn9kft05, .table th.tinytable_css_4l2z4657j8odcn9kft05 {    border-bottom: solid 0.05em black; }
+    &lt;/style&gt;
+    &lt;script src="https://polyfill.io/v3/polyfill.min.js?features=es6"&gt;&lt;/script&gt;
+    &lt;script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    &lt;/script&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;div class="container"&gt;
+      &lt;table class="table table-borderless" id="tinytable_zjcym4fccdke2mm5d12h" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing='true'&gt;
+        &lt;thead&gt;
+        &lt;caption&gt;Arbeitslosigkeit mit Interaktionstermen&lt;/caption&gt;
+              &lt;tr&gt;
+                &lt;th scope="col"&gt; &lt;/th&gt;
+                &lt;th scope="col"&gt;(1)&lt;/th&gt;
+              &lt;/tr&gt;
+        &lt;/thead&gt;
+        
+        &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Konstante          &lt;/td&gt;
+                  &lt;td&gt;3.31        &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                   &lt;/td&gt;
+                  &lt;td&gt;[2.95, 3.67]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Anteil der Schulden&lt;/td&gt;
+                  &lt;td&gt;0.23        &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                   &lt;/td&gt;
+                  &lt;td&gt;[0.19, 0.27]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Ostdeutschland     &lt;/td&gt;
+                  &lt;td&gt;1.36        &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                   &lt;/td&gt;
+                  &lt;td&gt;[0.84, 1.88]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Num.Obs.           &lt;/td&gt;
+                  &lt;td&gt;396         &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;R2                 &lt;/td&gt;
+                  &lt;td&gt;0.427       &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;R2 Adj.            &lt;/td&gt;
+                  &lt;td&gt;0.424       &lt;/td&gt;
+                &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+      function styleCell_tinytable_mqr60v1evbt3qaalr2uy(i, j, css_id) {
+        var table = document.getElementById("tinytable_zjcym4fccdke2mm5d12h");
+        table.rows[i].cells[j].classList.add(css_id);
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_zjcym4fccdke2mm5d12h');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret &lt;br&gt;
+        newCell.innerHTML = content;
+      }
+      function spanCell_tinytable_mqr60v1evbt3qaalr2uy(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_zjcym4fccdke2mm5d12h");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r &lt; rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c &gt; 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r &gt; 0) {
+            for (let c = colspan - 1; c &gt;= 0; c--) {
+              if (table.rows[i + r] &amp;&amp; table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(0, 0, 'tinytable_css_xcqcic84i3xznwkagmm7') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(0, 1, 'tinytable_css_xcqcic84i3xznwkagmm7') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(0, 0, 'tinytable_css_ilrgls4c330h4ko7hvb9') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(1, 0, 'tinytable_css_ilrgls4c330h4ko7hvb9') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(2, 0, 'tinytable_css_ilrgls4c330h4ko7hvb9') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(3, 0, 'tinytable_css_ilrgls4c330h4ko7hvb9') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(4, 0, 'tinytable_css_ilrgls4c330h4ko7hvb9') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(5, 0, 'tinytable_css_ilrgls4c330h4ko7hvb9') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(6, 0, 'tinytable_css_ilrgls4c330h4ko7hvb9') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(7, 0, 'tinytable_css_ilrgls4c330h4ko7hvb9') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(8, 0, 'tinytable_css_ilrgls4c330h4ko7hvb9') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(9, 0, 'tinytable_css_ilrgls4c330h4ko7hvb9') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(0, 1, 'tinytable_css_0tqxvymxi1ubbziv65ns') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(1, 1, 'tinytable_css_0tqxvymxi1ubbziv65ns') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(2, 1, 'tinytable_css_0tqxvymxi1ubbziv65ns') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(3, 1, 'tinytable_css_0tqxvymxi1ubbziv65ns') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(4, 1, 'tinytable_css_0tqxvymxi1ubbziv65ns') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(5, 1, 'tinytable_css_0tqxvymxi1ubbziv65ns') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(6, 1, 'tinytable_css_0tqxvymxi1ubbziv65ns') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(7, 1, 'tinytable_css_0tqxvymxi1ubbziv65ns') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(8, 1, 'tinytable_css_0tqxvymxi1ubbziv65ns') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(9, 1, 'tinytable_css_0tqxvymxi1ubbziv65ns') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(6, 0, 'tinytable_css_4l2z4657j8odcn9kft05') })
+window.addEventListener('load', function () { styleCell_tinytable_mqr60v1evbt3qaalr2uy(6, 1, 'tinytable_css_4l2z4657j8odcn9kft05') })
+    &lt;/script&gt;
+
+  &lt;/body&gt;
+
+&lt;/html&gt;
+```
 ]
 
 --
@@ -813,8 +1322,7 @@ modelsummary(list(schulden, interaktion, west, ost),
           title = "Arbeitslosigkeit mit Interaktionstermen",
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "ost1" = "Ostdeutschland", "(Intercept)" = "Konstante")
-          ) %&gt;%
-  add_header_above(c(" " = 1,"Alo-quote" = 4))
+          ) 
 ```
 
 
@@ -822,101 +1330,251 @@ modelsummary(list(schulden, interaktion, west, ost),
 
 ## Sample Splits und Interaktionsmodell
 
-&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
-&lt;caption&gt;Arbeitslosigkeit mit Interaktionstermen&lt;/caption&gt;
- &lt;thead&gt;
-&lt;tr&gt;
-&lt;th style="empty-cells: hide;border-bottom:hidden;" colspan="1"&gt;&lt;/th&gt;
-&lt;th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="4"&gt;&lt;div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; "&gt;Alo-quote&lt;/div&gt;&lt;/th&gt;
-&lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;  (1) &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;   (2) &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;   (3) &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;   (4) &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Konstante &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 3.31 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 3.23 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 3.23 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 6.11 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [2.95, 3.67] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [2.86, 3.59] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [2.85, 3.60] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [4.75, 7.46] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Anteil der Schulden &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.23 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.24 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.24 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.06 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [0.19, 0.27] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [0.20, 0.28] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [0.20, 0.28] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [−0.08, 0.21] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ostdeutschland &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 1.36 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 2.88 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [0.84, 1.88] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [1.43, 4.33] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Anteil der Schulden:Ostdeutschland &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; −0.18 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;box-shadow: 0px 1.5px"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt; [−0.34, −0.02] &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt;  &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Num.Obs. &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 396 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 396 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 321 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 75 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.427 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.439 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.414 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.017 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; R2 Adj. &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.424 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.435 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.412 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.004 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+
+```{=html}
+&lt;!DOCTYPE html&gt; 
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;tinytable_ui1grug6rcthfwo5rmw6&lt;/title&gt;
+    &lt;style&gt;
+.table td.tinytable_css_f7m7kjgzrnj415h357b3, .table th.tinytable_css_f7m7kjgzrnj415h357b3 {    border-bottom: solid 0.1em #d3d8dc; }
+.table td.tinytable_css_dv5uedhgec3x396svb4y, .table th.tinytable_css_dv5uedhgec3x396svb4y {    text-align: left; }
+.table td.tinytable_css_nvvc4jia48t2yb3k7xp1, .table th.tinytable_css_nvvc4jia48t2yb3k7xp1 {    text-align: center; }
+.table td.tinytable_css_blf9alvm2qzyjdl17mej, .table th.tinytable_css_blf9alvm2qzyjdl17mej {    text-align: center; }
+.table td.tinytable_css_oyz4zatoqbqyyme28zup, .table th.tinytable_css_oyz4zatoqbqyyme28zup {    text-align: center; }
+.table td.tinytable_css_5cr5xzh55lud9gl0uiur, .table th.tinytable_css_5cr5xzh55lud9gl0uiur {    text-align: center; }
+.table td.tinytable_css_vbzarj6sucvpv8s5uga1, .table th.tinytable_css_vbzarj6sucvpv8s5uga1 {    border-bottom: solid 0.05em black; }
+    &lt;/style&gt;
+    &lt;script src="https://polyfill.io/v3/polyfill.min.js?features=es6"&gt;&lt;/script&gt;
+    &lt;script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    &lt;/script&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;div class="container"&gt;
+      &lt;table class="table table-borderless" id="tinytable_ui1grug6rcthfwo5rmw6" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing='true'&gt;
+        &lt;thead&gt;
+        &lt;caption&gt;Arbeitslosigkeit mit Interaktionstermen&lt;/caption&gt;
+              &lt;tr&gt;
+                &lt;th scope="col"&gt; &lt;/th&gt;
+                &lt;th scope="col"&gt;(1)&lt;/th&gt;
+                &lt;th scope="col"&gt;(2)&lt;/th&gt;
+                &lt;th scope="col"&gt;(3)&lt;/th&gt;
+                &lt;th scope="col"&gt;(4)&lt;/th&gt;
+              &lt;/tr&gt;
+        &lt;/thead&gt;
+        
+        &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Konstante                         &lt;/td&gt;
+                  &lt;td&gt;3.31        &lt;/td&gt;
+                  &lt;td&gt;3.23          &lt;/td&gt;
+                  &lt;td&gt;3.23        &lt;/td&gt;
+                  &lt;td&gt;6.11         &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                                  &lt;/td&gt;
+                  &lt;td&gt;[2.95, 3.67]&lt;/td&gt;
+                  &lt;td&gt;[2.86, 3.59]  &lt;/td&gt;
+                  &lt;td&gt;[2.85, 3.60]&lt;/td&gt;
+                  &lt;td&gt;[4.75, 7.46] &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Anteil der Schulden               &lt;/td&gt;
+                  &lt;td&gt;0.23        &lt;/td&gt;
+                  &lt;td&gt;0.24          &lt;/td&gt;
+                  &lt;td&gt;0.24        &lt;/td&gt;
+                  &lt;td&gt;0.06         &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                                  &lt;/td&gt;
+                  &lt;td&gt;[0.19, 0.27]&lt;/td&gt;
+                  &lt;td&gt;[0.20, 0.28]  &lt;/td&gt;
+                  &lt;td&gt;[0.20, 0.28]&lt;/td&gt;
+                  &lt;td&gt;[-0.08, 0.21]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Ostdeutschland                    &lt;/td&gt;
+                  &lt;td&gt;1.36        &lt;/td&gt;
+                  &lt;td&gt;2.88          &lt;/td&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;             &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                                  &lt;/td&gt;
+                  &lt;td&gt;[0.84, 1.88]&lt;/td&gt;
+                  &lt;td&gt;[1.43, 4.33]  &lt;/td&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;             &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Anteil der Schulden:Ostdeutschland&lt;/td&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;-0.18         &lt;/td&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;             &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                                  &lt;/td&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;[-0.34, -0.02]&lt;/td&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;             &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Num.Obs.                          &lt;/td&gt;
+                  &lt;td&gt;396         &lt;/td&gt;
+                  &lt;td&gt;396           &lt;/td&gt;
+                  &lt;td&gt;321         &lt;/td&gt;
+                  &lt;td&gt;75           &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;R2                                &lt;/td&gt;
+                  &lt;td&gt;0.427       &lt;/td&gt;
+                  &lt;td&gt;0.439         &lt;/td&gt;
+                  &lt;td&gt;0.414       &lt;/td&gt;
+                  &lt;td&gt;0.017        &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;R2 Adj.                           &lt;/td&gt;
+                  &lt;td&gt;0.424       &lt;/td&gt;
+                  &lt;td&gt;0.435         &lt;/td&gt;
+                  &lt;td&gt;0.412       &lt;/td&gt;
+                  &lt;td&gt;0.004        &lt;/td&gt;
+                &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+      function styleCell_tinytable_ndougqcq2wn4836skjmb(i, j, css_id) {
+        var table = document.getElementById("tinytable_ui1grug6rcthfwo5rmw6");
+        table.rows[i].cells[j].classList.add(css_id);
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_ui1grug6rcthfwo5rmw6');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret &lt;br&gt;
+        newCell.innerHTML = content;
+      }
+      function spanCell_tinytable_ndougqcq2wn4836skjmb(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_ui1grug6rcthfwo5rmw6");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r &lt; rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c &gt; 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r &gt; 0) {
+            for (let c = colspan - 1; c &gt;= 0; c--) {
+              if (table.rows[i + r] &amp;&amp; table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(0, 0, 'tinytable_css_f7m7kjgzrnj415h357b3') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(0, 1, 'tinytable_css_f7m7kjgzrnj415h357b3') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(0, 2, 'tinytable_css_f7m7kjgzrnj415h357b3') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(0, 3, 'tinytable_css_f7m7kjgzrnj415h357b3') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(0, 4, 'tinytable_css_f7m7kjgzrnj415h357b3') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(0, 0, 'tinytable_css_dv5uedhgec3x396svb4y') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(1, 0, 'tinytable_css_dv5uedhgec3x396svb4y') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(2, 0, 'tinytable_css_dv5uedhgec3x396svb4y') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(3, 0, 'tinytable_css_dv5uedhgec3x396svb4y') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(4, 0, 'tinytable_css_dv5uedhgec3x396svb4y') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(5, 0, 'tinytable_css_dv5uedhgec3x396svb4y') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(6, 0, 'tinytable_css_dv5uedhgec3x396svb4y') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(7, 0, 'tinytable_css_dv5uedhgec3x396svb4y') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(8, 0, 'tinytable_css_dv5uedhgec3x396svb4y') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(9, 0, 'tinytable_css_dv5uedhgec3x396svb4y') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(10, 0, 'tinytable_css_dv5uedhgec3x396svb4y') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(11, 0, 'tinytable_css_dv5uedhgec3x396svb4y') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(0, 1, 'tinytable_css_nvvc4jia48t2yb3k7xp1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(1, 1, 'tinytable_css_nvvc4jia48t2yb3k7xp1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(2, 1, 'tinytable_css_nvvc4jia48t2yb3k7xp1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(3, 1, 'tinytable_css_nvvc4jia48t2yb3k7xp1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(4, 1, 'tinytable_css_nvvc4jia48t2yb3k7xp1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(5, 1, 'tinytable_css_nvvc4jia48t2yb3k7xp1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(6, 1, 'tinytable_css_nvvc4jia48t2yb3k7xp1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(7, 1, 'tinytable_css_nvvc4jia48t2yb3k7xp1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(8, 1, 'tinytable_css_nvvc4jia48t2yb3k7xp1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(9, 1, 'tinytable_css_nvvc4jia48t2yb3k7xp1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(10, 1, 'tinytable_css_nvvc4jia48t2yb3k7xp1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(11, 1, 'tinytable_css_nvvc4jia48t2yb3k7xp1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(0, 2, 'tinytable_css_blf9alvm2qzyjdl17mej') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(1, 2, 'tinytable_css_blf9alvm2qzyjdl17mej') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(2, 2, 'tinytable_css_blf9alvm2qzyjdl17mej') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(3, 2, 'tinytable_css_blf9alvm2qzyjdl17mej') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(4, 2, 'tinytable_css_blf9alvm2qzyjdl17mej') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(5, 2, 'tinytable_css_blf9alvm2qzyjdl17mej') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(6, 2, 'tinytable_css_blf9alvm2qzyjdl17mej') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(7, 2, 'tinytable_css_blf9alvm2qzyjdl17mej') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(8, 2, 'tinytable_css_blf9alvm2qzyjdl17mej') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(9, 2, 'tinytable_css_blf9alvm2qzyjdl17mej') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(10, 2, 'tinytable_css_blf9alvm2qzyjdl17mej') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(11, 2, 'tinytable_css_blf9alvm2qzyjdl17mej') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(0, 3, 'tinytable_css_oyz4zatoqbqyyme28zup') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(1, 3, 'tinytable_css_oyz4zatoqbqyyme28zup') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(2, 3, 'tinytable_css_oyz4zatoqbqyyme28zup') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(3, 3, 'tinytable_css_oyz4zatoqbqyyme28zup') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(4, 3, 'tinytable_css_oyz4zatoqbqyyme28zup') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(5, 3, 'tinytable_css_oyz4zatoqbqyyme28zup') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(6, 3, 'tinytable_css_oyz4zatoqbqyyme28zup') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(7, 3, 'tinytable_css_oyz4zatoqbqyyme28zup') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(8, 3, 'tinytable_css_oyz4zatoqbqyyme28zup') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(9, 3, 'tinytable_css_oyz4zatoqbqyyme28zup') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(10, 3, 'tinytable_css_oyz4zatoqbqyyme28zup') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(11, 3, 'tinytable_css_oyz4zatoqbqyyme28zup') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(0, 4, 'tinytable_css_5cr5xzh55lud9gl0uiur') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(1, 4, 'tinytable_css_5cr5xzh55lud9gl0uiur') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(2, 4, 'tinytable_css_5cr5xzh55lud9gl0uiur') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(3, 4, 'tinytable_css_5cr5xzh55lud9gl0uiur') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(4, 4, 'tinytable_css_5cr5xzh55lud9gl0uiur') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(5, 4, 'tinytable_css_5cr5xzh55lud9gl0uiur') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(6, 4, 'tinytable_css_5cr5xzh55lud9gl0uiur') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(7, 4, 'tinytable_css_5cr5xzh55lud9gl0uiur') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(8, 4, 'tinytable_css_5cr5xzh55lud9gl0uiur') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(9, 4, 'tinytable_css_5cr5xzh55lud9gl0uiur') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(10, 4, 'tinytable_css_5cr5xzh55lud9gl0uiur') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(11, 4, 'tinytable_css_5cr5xzh55lud9gl0uiur') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(8, 0, 'tinytable_css_vbzarj6sucvpv8s5uga1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(8, 1, 'tinytable_css_vbzarj6sucvpv8s5uga1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(8, 2, 'tinytable_css_vbzarj6sucvpv8s5uga1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(8, 3, 'tinytable_css_vbzarj6sucvpv8s5uga1') })
+window.addEventListener('load', function () { styleCell_tinytable_ndougqcq2wn4836skjmb(8, 4, 'tinytable_css_vbzarj6sucvpv8s5uga1') })
+    &lt;/script&gt;
+
+  &lt;/body&gt;
+
+&lt;/html&gt;
+```
 
 ---
 
@@ -943,102 +1601,246 @@ modelsummary(list(schulden, interaktion, west, ost),
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("anteil_schulden" = "Anteil der Schulden", "ost1" = "Ostdeutschland", "(Intercept)" = "Konstante"),
           gof_map = gm
-          ) %&gt;%
-  add_header_above(c(" " = 1,"Alo-quote" = 4))
+          ) 
 ```
 
 ---
 
 ## Darstellung der GOF
 
-&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
-&lt;caption&gt;Arbeitslosigkeit mit Interaktionstermen&lt;/caption&gt;
- &lt;thead&gt;
-&lt;tr&gt;
-&lt;th style="empty-cells: hide;border-bottom:hidden;" colspan="1"&gt;&lt;/th&gt;
-&lt;th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="4"&gt;&lt;div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; "&gt;Alo-quote&lt;/div&gt;&lt;/th&gt;
-&lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;  (1) &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;   (2) &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;   (3) &lt;/th&gt;
-   &lt;th style="text-align:center;"&gt;   (4) &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Konstante &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 3.31 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 3.23 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 3.23 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 6.11 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [2.95, 3.67] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [2.86, 3.59] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [2.85, 3.60] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [4.75, 7.46] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Anteil der Schulden &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.23 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.24 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.24 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.06 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [0.19, 0.27] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [0.20, 0.28] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [0.20, 0.28] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [−0.08, 0.21] &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Ostdeutschland &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 1.36 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 2.88 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [0.84, 1.88] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; [1.43, 4.33] &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Anteil der Schulden:Ostdeutschland &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; −0.18 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;box-shadow: 0px 1.5px"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt; [−0.34, −0.02] &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:center;box-shadow: 0px 1.5px"&gt;  &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; N &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 396 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 396 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 321 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 75 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; Adj. R&lt;sup&gt;2&lt;/sup&gt; &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.42 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.43 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.41 &lt;/td&gt;
-   &lt;td style="text-align:center;"&gt; 0.00 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+
+```{=html}
+&lt;!DOCTYPE html&gt; 
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;tinytable_ax9cs7ojcjowad8svhne&lt;/title&gt;
+    &lt;style&gt;
+.table td.tinytable_css_u6jsmf47pqj4dw91855r, .table th.tinytable_css_u6jsmf47pqj4dw91855r {    border-bottom: solid 0.1em #d3d8dc; }
+.table td.tinytable_css_wcs4rv2asz1l8xziws7s, .table th.tinytable_css_wcs4rv2asz1l8xziws7s {    text-align: left; }
+.table td.tinytable_css_485ikirpfuf57y3cdmyr, .table th.tinytable_css_485ikirpfuf57y3cdmyr {    text-align: center; }
+.table td.tinytable_css_930n98u358mwfgdde5b4, .table th.tinytable_css_930n98u358mwfgdde5b4 {    text-align: center; }
+.table td.tinytable_css_l7acxya1vo6r6hbjudhn, .table th.tinytable_css_l7acxya1vo6r6hbjudhn {    text-align: center; }
+.table td.tinytable_css_r82jy5lqt6y519uopbui, .table th.tinytable_css_r82jy5lqt6y519uopbui {    text-align: center; }
+.table td.tinytable_css_oa2wr9v1ttf8px55dhbx, .table th.tinytable_css_oa2wr9v1ttf8px55dhbx {    border-bottom: solid 0.05em black; }
+    &lt;/style&gt;
+    &lt;script src="https://polyfill.io/v3/polyfill.min.js?features=es6"&gt;&lt;/script&gt;
+    &lt;script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    &lt;/script&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;div class="container"&gt;
+      &lt;table class="table table-borderless" id="tinytable_ax9cs7ojcjowad8svhne" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing='true'&gt;
+        &lt;thead&gt;
+        &lt;caption&gt;Arbeitslosigkeit mit Interaktionstermen&lt;/caption&gt;
+              &lt;tr&gt;
+                &lt;th scope="col"&gt; &lt;/th&gt;
+                &lt;th scope="col"&gt;(1)&lt;/th&gt;
+                &lt;th scope="col"&gt;(2)&lt;/th&gt;
+                &lt;th scope="col"&gt;(3)&lt;/th&gt;
+                &lt;th scope="col"&gt;(4)&lt;/th&gt;
+              &lt;/tr&gt;
+        &lt;/thead&gt;
+        
+        &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Konstante                         &lt;/td&gt;
+                  &lt;td&gt;3.31        &lt;/td&gt;
+                  &lt;td&gt;3.23          &lt;/td&gt;
+                  &lt;td&gt;3.23        &lt;/td&gt;
+                  &lt;td&gt;6.11         &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                                  &lt;/td&gt;
+                  &lt;td&gt;[2.95, 3.67]&lt;/td&gt;
+                  &lt;td&gt;[2.86, 3.59]  &lt;/td&gt;
+                  &lt;td&gt;[2.85, 3.60]&lt;/td&gt;
+                  &lt;td&gt;[4.75, 7.46] &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Anteil der Schulden               &lt;/td&gt;
+                  &lt;td&gt;0.23        &lt;/td&gt;
+                  &lt;td&gt;0.24          &lt;/td&gt;
+                  &lt;td&gt;0.24        &lt;/td&gt;
+                  &lt;td&gt;0.06         &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                                  &lt;/td&gt;
+                  &lt;td&gt;[0.19, 0.27]&lt;/td&gt;
+                  &lt;td&gt;[0.20, 0.28]  &lt;/td&gt;
+                  &lt;td&gt;[0.20, 0.28]&lt;/td&gt;
+                  &lt;td&gt;[-0.08, 0.21]&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Ostdeutschland                    &lt;/td&gt;
+                  &lt;td&gt;1.36        &lt;/td&gt;
+                  &lt;td&gt;2.88          &lt;/td&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;             &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                                  &lt;/td&gt;
+                  &lt;td&gt;[0.84, 1.88]&lt;/td&gt;
+                  &lt;td&gt;[1.43, 4.33]  &lt;/td&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;             &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Anteil der Schulden:Ostdeutschland&lt;/td&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;-0.18         &lt;/td&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;             &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;                                  &lt;/td&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;[-0.34, -0.02]&lt;/td&gt;
+                  &lt;td&gt;            &lt;/td&gt;
+                  &lt;td&gt;             &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;N                                 &lt;/td&gt;
+                  &lt;td&gt;396         &lt;/td&gt;
+                  &lt;td&gt;396           &lt;/td&gt;
+                  &lt;td&gt;321         &lt;/td&gt;
+                  &lt;td&gt;75           &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;Adj. R&lt;sup&gt;2&lt;/sup&gt;                &lt;/td&gt;
+                  &lt;td&gt;0.42        &lt;/td&gt;
+                  &lt;td&gt;0.43          &lt;/td&gt;
+                  &lt;td&gt;0.41        &lt;/td&gt;
+                  &lt;td&gt;0.00         &lt;/td&gt;
+                &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+      function styleCell_tinytable_xqkqvk7jr72ttapeady6(i, j, css_id) {
+        var table = document.getElementById("tinytable_ax9cs7ojcjowad8svhne");
+        table.rows[i].cells[j].classList.add(css_id);
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_ax9cs7ojcjowad8svhne');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret &lt;br&gt;
+        newCell.innerHTML = content;
+      }
+      function spanCell_tinytable_xqkqvk7jr72ttapeady6(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_ax9cs7ojcjowad8svhne");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r &lt; rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c &gt; 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r &gt; 0) {
+            for (let c = colspan - 1; c &gt;= 0; c--) {
+              if (table.rows[i + r] &amp;&amp; table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(0, 0, 'tinytable_css_u6jsmf47pqj4dw91855r') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(0, 1, 'tinytable_css_u6jsmf47pqj4dw91855r') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(0, 2, 'tinytable_css_u6jsmf47pqj4dw91855r') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(0, 3, 'tinytable_css_u6jsmf47pqj4dw91855r') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(0, 4, 'tinytable_css_u6jsmf47pqj4dw91855r') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(0, 0, 'tinytable_css_wcs4rv2asz1l8xziws7s') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(1, 0, 'tinytable_css_wcs4rv2asz1l8xziws7s') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(2, 0, 'tinytable_css_wcs4rv2asz1l8xziws7s') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(3, 0, 'tinytable_css_wcs4rv2asz1l8xziws7s') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(4, 0, 'tinytable_css_wcs4rv2asz1l8xziws7s') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(5, 0, 'tinytable_css_wcs4rv2asz1l8xziws7s') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(6, 0, 'tinytable_css_wcs4rv2asz1l8xziws7s') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(7, 0, 'tinytable_css_wcs4rv2asz1l8xziws7s') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(8, 0, 'tinytable_css_wcs4rv2asz1l8xziws7s') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(9, 0, 'tinytable_css_wcs4rv2asz1l8xziws7s') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(10, 0, 'tinytable_css_wcs4rv2asz1l8xziws7s') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(0, 1, 'tinytable_css_485ikirpfuf57y3cdmyr') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(1, 1, 'tinytable_css_485ikirpfuf57y3cdmyr') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(2, 1, 'tinytable_css_485ikirpfuf57y3cdmyr') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(3, 1, 'tinytable_css_485ikirpfuf57y3cdmyr') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(4, 1, 'tinytable_css_485ikirpfuf57y3cdmyr') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(5, 1, 'tinytable_css_485ikirpfuf57y3cdmyr') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(6, 1, 'tinytable_css_485ikirpfuf57y3cdmyr') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(7, 1, 'tinytable_css_485ikirpfuf57y3cdmyr') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(8, 1, 'tinytable_css_485ikirpfuf57y3cdmyr') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(9, 1, 'tinytable_css_485ikirpfuf57y3cdmyr') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(10, 1, 'tinytable_css_485ikirpfuf57y3cdmyr') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(0, 2, 'tinytable_css_930n98u358mwfgdde5b4') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(1, 2, 'tinytable_css_930n98u358mwfgdde5b4') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(2, 2, 'tinytable_css_930n98u358mwfgdde5b4') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(3, 2, 'tinytable_css_930n98u358mwfgdde5b4') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(4, 2, 'tinytable_css_930n98u358mwfgdde5b4') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(5, 2, 'tinytable_css_930n98u358mwfgdde5b4') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(6, 2, 'tinytable_css_930n98u358mwfgdde5b4') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(7, 2, 'tinytable_css_930n98u358mwfgdde5b4') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(8, 2, 'tinytable_css_930n98u358mwfgdde5b4') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(9, 2, 'tinytable_css_930n98u358mwfgdde5b4') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(10, 2, 'tinytable_css_930n98u358mwfgdde5b4') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(0, 3, 'tinytable_css_l7acxya1vo6r6hbjudhn') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(1, 3, 'tinytable_css_l7acxya1vo6r6hbjudhn') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(2, 3, 'tinytable_css_l7acxya1vo6r6hbjudhn') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(3, 3, 'tinytable_css_l7acxya1vo6r6hbjudhn') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(4, 3, 'tinytable_css_l7acxya1vo6r6hbjudhn') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(5, 3, 'tinytable_css_l7acxya1vo6r6hbjudhn') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(6, 3, 'tinytable_css_l7acxya1vo6r6hbjudhn') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(7, 3, 'tinytable_css_l7acxya1vo6r6hbjudhn') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(8, 3, 'tinytable_css_l7acxya1vo6r6hbjudhn') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(9, 3, 'tinytable_css_l7acxya1vo6r6hbjudhn') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(10, 3, 'tinytable_css_l7acxya1vo6r6hbjudhn') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(0, 4, 'tinytable_css_r82jy5lqt6y519uopbui') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(1, 4, 'tinytable_css_r82jy5lqt6y519uopbui') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(2, 4, 'tinytable_css_r82jy5lqt6y519uopbui') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(3, 4, 'tinytable_css_r82jy5lqt6y519uopbui') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(4, 4, 'tinytable_css_r82jy5lqt6y519uopbui') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(5, 4, 'tinytable_css_r82jy5lqt6y519uopbui') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(6, 4, 'tinytable_css_r82jy5lqt6y519uopbui') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(7, 4, 'tinytable_css_r82jy5lqt6y519uopbui') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(8, 4, 'tinytable_css_r82jy5lqt6y519uopbui') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(9, 4, 'tinytable_css_r82jy5lqt6y519uopbui') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(10, 4, 'tinytable_css_r82jy5lqt6y519uopbui') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(8, 0, 'tinytable_css_oa2wr9v1ttf8px55dhbx') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(8, 1, 'tinytable_css_oa2wr9v1ttf8px55dhbx') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(8, 2, 'tinytable_css_oa2wr9v1ttf8px55dhbx') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(8, 3, 'tinytable_css_oa2wr9v1ttf8px55dhbx') })
+window.addEventListener('load', function () { styleCell_tinytable_xqkqvk7jr72ttapeady6(8, 4, 'tinytable_css_oa2wr9v1ttf8px55dhbx') })
+    &lt;/script&gt;
+
+  &lt;/body&gt;
+
+&lt;/html&gt;
+```
 
 ---
 

@@ -30,7 +30,7 @@ Nachdem wir uns im ersten Teil der Case Study alle Daten aus verschiedenen Daten
 
 Hierzu laden wir uns die in Teil 1 erstellten Datensätze und die in Teil 2 gemachten Anpassungen:
 
-```{r, message=FALSE}
+```{r}
 library(tidyverse)
 library(skimr)
 library(modelsummary)
@@ -65,7 +65,7 @@ bip_wachstum <- bip_zeitreihe %>%
   arrange(Jahr) %>%
   mutate( bip_wachstum = 100*(bip - lag(bip)) / bip ) %>%
   ungroup() %>%
-  filter( Jahr == 2017 ) %>%
+  filter( Jahr == 2021 ) %>%
   select(Regionalschluessel, bip_wachstum, Jahr)
 
 gesamtdaten <- left_join(gesamtdaten, bip_wachstum, by = "Regionalschluessel")
@@ -86,7 +86,7 @@ Wobei $y$ die abhängige und $x$ die unabhängige Variable ist (auch erklärende
 
 Wir wollen nun die Arbeitslosenquote auf die Wachstumsrate des BIP regressieren:
 
-```{r, message = FALSE, warnign = FALSE,results='asis'}
+```{r, results='asis'}
 bip <- lm(alo_quote ~ bip_wachstum, data = gesamtdaten)
 
 gm <- tibble::tribble(
@@ -102,7 +102,7 @@ modelsummary(bip,
           gof_omit = 'DF|Deviance|Log.Lik.|F|RMSE|AIC|BIC',
           coef_rename = c("bip_wachstum" = "BIP-Wachstum", "(Intercept)" = "Konstante"),
           gof_map = gm
-          ) %>%
+          ) 
   add_header_above(c(" " = 1,"Alo-quote" = 1))
 ```
 

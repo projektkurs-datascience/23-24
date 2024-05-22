@@ -59,6 +59,8 @@ navbar:
         href: ./tutorials/Teamvertrag.html
       - text: "Quellen und KI Guidelines"
         href: ./tutorials/Quellenverweise-und-AI-Policy.html
+      - text: "WebScraping Tutorial"
+        href: ./tutorials/rvest.html
       - text: "Cheatsheets"
         href: https://rstudio.com/resources/cheatsheets/
   - text: Moodle WiSe
